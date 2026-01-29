@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movementAmount * Time.fixedDeltaTime);
-        Debug.Log("Speed: " + (movementAmount * Time.fixedDeltaTime).sqrMagnitude);
+        //Debug.Log("Speed: " + (movementAmount * Time.fixedDeltaTime).sqrMagnitude);
         sprintCooldown = Mathf.Max(0, sprintCooldown - Time.fixedDeltaTime);
         if (sprint)
         {
@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void OnSprint(InputValue value)
     {
-        Debug.Log("Value.isPressed: " + value.isPressed + " Sprint Cooldown: " + sprintCooldown);
+        //Debug.Log("Value.isPressed: " + value.isPressed + " Sprint Cooldown: " + sprintCooldown);
         if (value.isPressed && sprintCooldown <= 0f)
         {
             sprint = true;

@@ -46,32 +46,6 @@ public class PlayerInteractor : MonoBehaviour
         return nearest;
     }
 
-    private Interactable OnTriggerEnter2D()
-    {
-        Debug.Log("OnTriggerEnter2D: ENTERED");
-        // adds all nearby objects in the raduis to our buffer
-        int count = Physics2D.OverlapCircleNonAlloc(transform.position, radius, buffer, interactableLayers, -1, 0); //QueryTriggerInteraction.Collide
-        Interactable nearest = null;
-        float BestDistSq = float.MaxValue;
-
-        // go through each collider that is not null and try to get an interactable object that we can interact with
-        for (int i = 0; i < count; i++)
-        {
-            Collider2D col = buffer[i]; // go through each collider in the buffer
-            if (col == null) continue; // if they're null we can ignore it
-            Interactable interactable = col.GetComponentInParent<Interactable>();
-            if (interactable == null) continue; // if this is null too we can ignore it
-            float DistSq = (col.transform.position - transform.position).sqrMagnitude;
-            if (DistSq < BestDistSq) // if we have a better distance
-            {
-                BestDistSq = DistSq; // update the distance
-                nearest = interactable; // update the nearest object as well
-            }
-        }
-        Debug.Log("OnTriggerEnter2D: EXIT");
-        return nearest;
-    }
-
     private void UpdateFocus(Interactable nearest)
     {
         // if the new focus is not equal to the current, change the focus

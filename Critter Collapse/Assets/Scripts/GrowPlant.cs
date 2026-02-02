@@ -8,6 +8,9 @@ public class GrowPlant : MonoBehaviour
     [SerializeField] GameObject plant;
     [SerializeField] GameObject rot;
 
+    // flags
+    private bool seedWatered = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,26 +23,27 @@ public class GrowPlant : MonoBehaviour
         
     }
 
-    private void PlantSeed()
+    public void PlantSeed()
     {
         seed.SetActive(true);
         Debug.Log("Seed planted");
     }
 
-    private void WaterSeed()
+    public void WaterSeed()
     {
         seed.SetActive(false);
         plant.SetActive(true);
+        seedWatered = true;
         Debug.Log("Seed watered");
     }
 
-    private void HarvestPlant()
+    public void HarvestPlant()
     {
         plant.SetActive(false);
         Debug.Log("Plant Harvested");
     }
 
-    private void PlantRot()
+    public void PlantRot()
     {
         plant.SetActive(false);
         rot.SetActive(true);

@@ -24,7 +24,7 @@ public class InteractableObject : MonoBehaviour, Interactable
 
     public void Interact()
     {
-        onInteract?.Invoke();
+        onInteract?.Invoke(); //using an event system on On_Interact()
     }
 
     public void OnFocusGained()

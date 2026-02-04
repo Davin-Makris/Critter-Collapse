@@ -10,7 +10,7 @@ public class GrowPlant : MonoBehaviour
 
     // flags
     private bool seedWatered = false; // if the seed has been watered
-    private bool timerIsRunning = false;
+    private bool timerIsRunning = false; // if the timer is running
     private bool plantHarvested = false; // if the plant has been harvested yet
 
     // timer

@@ -8,6 +8,8 @@ public class GrowPlant : MonoBehaviour
     [SerializeField] GameObject plant;
     [SerializeField] GameObject rot;
 
+    private WateringCan wateringCan; // the watering can for checks
+
     // flags
     private bool seedWatered = false; // if the seed has been watered
     private bool timerIsRunning = false; // if the timer is running
@@ -21,6 +23,7 @@ public class GrowPlant : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        wateringCan = GameObject.Find("WateringCan").GetComponent<WateringCan>();
         timer = timeUntilRot;
     }
 
@@ -52,12 +55,21 @@ public class GrowPlant : MonoBehaviour
 
     public void WaterSeed()
     {
-        seed.SetActive(false);
-        plant.SetActive(true);
-        seedWatered = true;
-        timerIsRunning = true; // start the timer when a plant is watered
-        timer = timeUntilRot; // reset the timer in case it has been changed
-        Debug.Log("Seed watered");
+        // if the player is holding the watering can
+        if (wateringCan.holdingCan)
+        {
+            seed.SetActive(false);
+            plant.SetActive(true);
+            seedWatered = true;
+            timerIsRunning = true; // start the timer when a plant is watered
+            timer = timeUntilRot; // reset the timer in case it has been changed
+            Debug.Log("Seed watered");
+        }
+        else
+        {
+            Debug.Log("Cannot water seeds without the watering can");
+        }
+
     }
 
     public void HarvestPlant()

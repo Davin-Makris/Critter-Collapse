@@ -5,6 +5,7 @@ public class WateringCan : MonoBehaviour
     [SerializeField] GameObject inventory; // the player's inventory
     [SerializeField] GameObject spawnPoint; // the spawn point for the can
 
+    [HideInInspector]
     public bool holdingCan = false; // if the player is holding the watering can or not
 
     // the On Interact for the watering can

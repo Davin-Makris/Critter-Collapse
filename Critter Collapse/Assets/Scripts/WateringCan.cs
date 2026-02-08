@@ -15,12 +15,12 @@ public class WateringCan : MonoBehaviour
     {
         if (holdingCan)
         {
-            this.transform.SetParent(spawnPoint.transform); // make this a child of the spawn point
+            //this.transform.SetParent(spawnPoint.transform); // make this a child of the spawn point
             holdingCan = false; // set holdingCan accordingly
         }
         else
         {
-            this.transform.SetParent(inventory.transform); // make this a child of the inventory
+            //this.transform.SetParent(inventory.transform); // make this a child of the inventory
             holdingCan = true; // set holdingCan accordingly
         }
     }

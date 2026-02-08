@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class InteractableObject : MonoBehaviour, Interactable
 {
+    [SerializeField] private GameObject thisObject; // a reference to this object for adding to inventory
     [SerializeField] private string displayName = "Interact";
     [SerializeField] private bool isEnabled = true;
     [SerializeField] private UnityEvent onInteract;
@@ -11,6 +12,7 @@ public class InteractableObject : MonoBehaviour, Interactable
     public bool CanInteract() => isEnabled;
 
     private Outline outline;
+    public static GameObject lastObject; // a reference to the last object interacted with for when we add it to the inventory
 
     public void Awake()
     {
@@ -25,6 +27,7 @@ public class InteractableObject : MonoBehaviour, Interactable
     public void Interact()
     {
         onInteract?.Invoke(); //using an event system on On_Interact()
+        lastObject = thisObject;
     }
 
     public void OnFocusGained()

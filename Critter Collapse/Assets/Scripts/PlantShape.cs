@@ -12,7 +12,7 @@ public class PlantShape : MonoBehaviour
 
     // How to incorporate into seeds/interactables:
     // 1. Add a tag to the plantGrow object that will determine what plant it grows into, like 'Cactus' or 'Flower'
-    // 2. When the plant goes from seed to full plant, AddComponent<PlantShape>() to the object.
+    // 2. When the plant goes from seed to full plant, AddComponent<PlantShape>() to the object, or set the component to active. 
     //          --Issue: We need a reference to the plant container to put into the container, may need to findComponent<PlantContainer>() or else we'll null reference
     // 3. Add interactable elements, when we interact with a plant in our hand and we're near the plant shipment box we need to open a menu to determine where to place.
     //          --
@@ -35,6 +35,11 @@ public class PlantShape : MonoBehaviour
 
     }
 
+    public void testPlace()
+    {
+        placeInBin(0, 0);
+    }
+
     public void placeInBin(int x, int y) //X and Y should correspond to the top left square we're placing the plant into.
     {
         if (x >= 0 && y >= 0 && (x + plantWidth) <= pc.containerWidth && (y + plantHeight) <= pc.containerHeight) //if we fit in the container
@@ -52,19 +57,22 @@ public class PlantShape : MonoBehaviour
         {
             for (int j = 0; j < plantHeight; ++j)
             {
-                if (plantMatrix[j, i] != 0 && pc.plantContainerMatrix[x + i, y + j] != 0) //if we take up a space in our matrix, make sure that the container is empty in that spot
+                //if we take up a space in our matrix, make sure that the container is empty in that spot
+                if (plantMatrix[i, j] != 0 && pc.plantContainerMatrix[x + i, y + j] != 0) // CHECK [j, i]?
                     return true;
             }
         }
         return false;
     }
+
+    //assigns the values in the container to the plant ID
     private void insertPlant(int x, int y)
     {
         for (int i = 0; i < plantWidth; ++i)
         {
             for (int j = 0; j < plantHeight; ++j)
             {
-                if (plantMatrix[j, i] != 0)
+                if (plantMatrix[i, j] != 0) //CHECK
                 {
                     pc.plantContainerMatrix[x + i, y + j] = myPlantID; //Fill the space
                 }
@@ -73,7 +81,8 @@ public class PlantShape : MonoBehaviour
         }
     }
 
-    public void RotateMatrix(bool clockwise = true) //mathy tricks i learned in linear algebra, "transposing a matrix then reversing the rows rotates it clockwise"
+    //mathy tricks i learned in linear algebra, "transposing a matrix then reversing the rows rotates it clockwise"
+    public void RotateMatrix(bool clockwise = true) 
     {
         int oldHeight = plantHeight;
         int oldWidth = plantWidth;
@@ -99,6 +108,7 @@ public class PlantShape : MonoBehaviour
         plantHeight = (short)plantMatrix.GetLength(0);
         plantWidth = (short)plantMatrix.GetLength(1);
     } 
+
     public void setCactus()
     {
         short[,] cactusMatrix = {
@@ -112,6 +122,7 @@ public class PlantShape : MonoBehaviour
         plantHeight = (short)plantMatrix.GetLength(0);
         plantWidth = (short)plantMatrix.GetLength(1);
     }
+
     public void setFlower()
     {
         short[,] flowerMatrix = {

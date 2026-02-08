@@ -3,9 +3,9 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {   // you can only  have one thing in the inventoy at a time
     static bool inventoryFull = false;
-    [SerializeField] GameObject inInventory; // the obj currently in the inventory
+    private GameObject inInventory; // the obj currently in the inventory
     [SerializeField] GameObject inventory; // the player's inventory
-    private GameObject lastObject = InteractableObject.lastObject; // the object that we last interacted with
+    //private GameObject lastObject = InteractableObject.lastObject; // the object that we last interacted with
 
 
     public void addToInventory()
@@ -15,9 +15,10 @@ public class Inventory : MonoBehaviour
             inInventory.transform.SetParent(null); // drop the object
             inventoryFull = false;
         }
-        else // otherwise you can pick it up
+        else // otherwise pick it up
         {
-            inInventory.transform.SetParent(inventory.transform); // make the obj a child of the inventory
+            inInventory = InteractableObject.lastObject; // update our inventory
+            inInventory.transform.SetParent(inventory.transform); // pickup the last object we interacted with 
             inventoryFull = true;
         }
     }

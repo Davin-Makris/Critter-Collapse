@@ -1,13 +1,15 @@
 using UnityEngine;
-
-public class PlantShape : MonoBehaviour
+using Unity.Netcode;
+public class PlantShape : NetworkBehaviour
 {
-    private static short _GLOBALPLANTID = 1; //Plant ID unique identifies plants, and the ID will be how we differentiate the plants in different positions of the container
+    public NetworkVariable<short> _GLOBALPLANTID = new NetworkVariable<short>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); //Plant ID unique identifies plants, and the ID will be how we differentiate the plants in different positions of the container
     [SerializeField] public short plantWidth;
     [SerializeField] public short plantHeight;
     [SerializeField] PlantContainer pc; //Reference to the shipment container
     public short[,] plantMatrix; //our shape 'fingerprint,' where plantMatrix[i,j] == myPlantID denotes a occupied space
-    private short myPlantID; 
+    public short myPlantID;
+
+    private NetworkVariable<int> rotations = new NetworkVariable<int>(0);
 
 
     // How to incorporate into seeds/interactables:
@@ -19,8 +21,8 @@ public class PlantShape : MonoBehaviour
 
     private void Awake()
     {
-        myPlantID = _GLOBALPLANTID; //Assign plantID, then increment the class-shared variable to keep it unique
-        _GLOBALPLANTID += 1;
+        myPlantID = _GLOBALPLANTID.Value; //Assign plantID, then increment the class-shared variable to keep it unique
+        _GLOBALPLANTID.Value+=1;
     }
     void Start()
     {
@@ -40,8 +42,13 @@ public class PlantShape : MonoBehaviour
         placeInBin(0, 0);
     }
 
+    [Rpc(SendTo.Everyone)]
     public void placeInBin(int x, int y) //X and Y should correspond to the top left square we're placing the plant into.
     {
+        if (!IsOwner)
+        {
+            updateRotations();
+        }
         if (x >= 0 && y >= 0 && (x + plantWidth) <= pc.containerWidth && (y + plantHeight) <= pc.containerHeight) //if we fit in the container
         {
             if (!doesPlantOverlap(x, y)) //if no part of the space we're inserting into is already taken
@@ -82,6 +89,7 @@ public class PlantShape : MonoBehaviour
     }
 
     //mathy tricks i learned in linear algebra, "transposing a matrix then reversing the rows rotates it clockwise"
+
     public void RotateMatrix(bool clockwise = true) 
     {
         int oldHeight = plantHeight;
@@ -104,11 +112,31 @@ public class PlantShape : MonoBehaviour
             }
         }
 
+        if (clockwise){
+            rotations.Value += 1;
+        }
+        else
+        {
+            rotations.Value += 3; //3 clockwise rotations = 1 counter clockwise rotation
+        }
+
+        rotations.Value %= 4; //0: No rotations, 1: Clockwise once, 2: 180 Degrees, 3: Counter Clockwise
+
         plantMatrix = rotated; //replace the old matrix 
         plantHeight = (short)plantMatrix.GetLength(0);
         plantWidth = (short)plantMatrix.GetLength(1);
-    } 
+    }
 
+    private void updateRotations()
+    {
+        for (int i = 0; i < rotations.Value; ++i)
+        {
+            RotateMatrix(clockwise: true);
+        }
+        rotations.Value = 0;
+    }
+
+    [Rpc(SendTo.Everyone)]
     public void setCactus()
     {
         short[,] cactusMatrix = {
@@ -123,6 +151,7 @@ public class PlantShape : MonoBehaviour
         plantWidth = (short)plantMatrix.GetLength(1);
     }
 
+    [Rpc(SendTo.Everyone)]
     public void setFlower()
     {
         short[,] flowerMatrix = {

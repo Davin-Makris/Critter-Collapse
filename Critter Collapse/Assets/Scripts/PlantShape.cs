@@ -39,11 +39,11 @@ public class PlantShape : NetworkBehaviour
 
     public void testPlace()
     {
-        placeInBin(0, 0);
+        placeInBinRPC(0, 0);
     }
 
     [Rpc(SendTo.Everyone)]
-    public void placeInBin(int x, int y) //X and Y should correspond to the top left square we're placing the plant into.
+    public void placeInBinRPC(int x, int y) //X and Y should correspond to the top left square we're placing the plant into.
     {
         if (!IsOwner)
         {
@@ -137,7 +137,7 @@ public class PlantShape : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void setCactus()
+    public void setCactusRPC()
     {
         short[,] cactusMatrix = {
         { myPlantID, 0,         myPlantID, 0,         myPlantID },
@@ -152,7 +152,7 @@ public class PlantShape : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone)]
-    public void setFlower()
+    public void setFlowerRPC()
     {
         short[,] flowerMatrix = {
         { 0,         myPlantID, 0         },

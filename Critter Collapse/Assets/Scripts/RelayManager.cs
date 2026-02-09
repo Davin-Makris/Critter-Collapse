@@ -28,12 +28,25 @@ public class RelayManager : MonoBehaviour
     {
         string joinCode = await StartHostWithRelay();
         joinCodeText.text = "Lobby Code: " + joinCode;
-        SceneManager.LoadScene("SampleScene");
+        NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
     }
 
     public async void JoinRelay()
     {
-        await StartClientWithRelay(joinCodeInputField.text);
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        {
+            try
+            {
+                Debug.Log("Trying Code: " + joinCodeInputField.text);
+                await StartClientWithRelay(joinCodeInputField.text);
+                NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+            }
+            catch
+            {
+                Debug.Log("Wrong!");
+            }
+        }
+        
     }
 
     private async Task<string> StartHostWithRelay(int maxConnections = 4)
@@ -45,6 +58,7 @@ public class RelayManager : MonoBehaviour
 
         string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId); //Generate a code for clients to load onto
 
+        Debug.Log("JoinCode: " + joinCode);
         return NetworkManager.Singleton.StartHost() ? joinCode : null;
     }
     

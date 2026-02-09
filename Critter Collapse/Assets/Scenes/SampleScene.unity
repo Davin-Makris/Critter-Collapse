@@ -724,7 +724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Clean Up
   isEnabled: 1
   onInteract:
@@ -1115,7 +1114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Water Seed
   isEnabled: 1
   onInteract:
@@ -1548,7 +1546,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Harvest Plant
   isEnabled: 1
   onInteract:
@@ -1748,7 +1745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276e69a8471b02b40aaaa5754e18168d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  inInventory: {fileID: 0}
   inventory: {fileID: 703095405}
 --- !u!114 &1579246632
 MonoBehaviour:
@@ -1926,7 +1922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Get Water
   isEnabled: 1
   onInteract:
@@ -2378,10 +2373,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2006809577}
   - component: {fileID: 2006809576}
+  - component: {fileID: 2006809578}
   - component: {fileID: 2006809575}
   - component: {fileID: 2006809574}
   - component: {fileID: 2006809573}
-  - component: {fileID: 2006809578}
   m_Layer: 0
   m_Name: Plant
   m_TagString: Untagged
@@ -2493,7 +2488,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Interact
   isEnabled: 1
   onInteract:
@@ -2501,7 +2495,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2006809575}
         m_TargetAssemblyTypeName: PlantShape, Assembly-CSharp
-        m_MethodName: setCactus
+        m_MethodName: setCactusRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2696,7 +2690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
-  thisObject: {fileID: 0}
   displayName: Plant Seed
   isEnabled: 1
   onInteract:
@@ -2830,11 +2823,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 916833155586442154, guid: 38da96f7df236804ca23fecce2310161, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 1579246630}
-    - targetCorrespondingSourceObject: {fileID: 916833155586442154, guid: 38da96f7df236804ca23fecce2310161, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 1579246633}
+    - targetCorrespondingSourceObject: {fileID: 916833155586442154, guid: 38da96f7df236804ca23fecce2310161, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 1579246630}
     - targetCorrespondingSourceObject: {fileID: 916833155586442154, guid: 38da96f7df236804ca23fecce2310161, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1579246632}

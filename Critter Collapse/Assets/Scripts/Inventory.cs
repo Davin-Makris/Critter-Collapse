@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
-{   // you can only  have one thing in the inventoy at a time
+{   // you can only have one thing in the inventoy at a time
     static bool inventoryFull = false;
     private GameObject inInventory; // the obj currently in the inventory
     [SerializeField] GameObject inventory; // the player's inventory

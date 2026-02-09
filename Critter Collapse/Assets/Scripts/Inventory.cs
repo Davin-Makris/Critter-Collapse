@@ -19,7 +19,8 @@ public class Inventory : NetworkBehaviour
         {
             if (inInventoryNO = inInventory.GetComponentInParent<NetworkObject>())
             {
-                Debug.Log("Removing Item: " + inInventoryNO.TryRemoveParent());
+                Debug.Log("Removing Item: " + inInventoryNO.TryRemoveParent(true) + "\nParent: " + inInventory.transform.parent +"\nLast Object Parent: " + InteractableObject.lastObject.transform.parent);
+                inInventory.transform.SetParent(null);
             }
             else
             {

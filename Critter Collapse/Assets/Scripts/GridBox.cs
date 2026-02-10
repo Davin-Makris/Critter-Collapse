@@ -4,7 +4,6 @@ public class GridBox : MonoBehaviour
 {
     [SerializeField] short xCord; // x position, starting at 0
     [SerializeField] short yCord; // y postition, starting at 0
-    //private PlantShape plantRef;
     private GameObject objInInventory; // the object currently in the player's inventory 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

@@ -16,7 +16,7 @@ public class PlayerInteractor : MonoBehaviour
         if (focused != null && Input.GetKeyDown(KeyCode.E))
         {
             // if we can interact with it, do so
-            if (focused.CanInteract()) focused.Interact();
+            if (focused.CanInteract()) focused.Interact(gameObject); // gameObject refers to THIS player that is doing the interacting
         }
     }
 

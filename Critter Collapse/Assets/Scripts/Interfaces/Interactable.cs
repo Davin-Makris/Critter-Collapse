@@ -8,7 +8,7 @@ public interface Interactable
 
     bool CanInteract();
 
-    void Interact();
+    void Interact(GameObject player);
 
     void OnFocusGained();
 

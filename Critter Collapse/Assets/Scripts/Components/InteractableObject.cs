@@ -6,6 +6,8 @@ public class InteractableObject : MonoBehaviour, Interactable
     [SerializeField] private string displayName = "Interact";
     [SerializeField] private bool isEnabled = true;
     [SerializeField] private UnityEvent onInteract;
+    // a flag that checks if we need to add this object to the player inventory during Interact()
+    [SerializeField] private bool canAddToInventory = false; // false unless checked otherwise
 
     public string DisplayName => displayName; // connects to the Interactable interface values
     public bool CanInteract() => isEnabled;
@@ -25,10 +27,16 @@ public class InteractableObject : MonoBehaviour, Interactable
         lastObject = gameObject; // update to the object this script is attached to
     }
 
-    public void Interact()
+    // takes the player that did the interaction as a param
+    public void Interact(GameObject player)
     {
         lastObject = gameObject; // update to the object this script is attached to
-        onInteract?.Invoke(); //using an event system on On_Interact()
+        if (canAddToInventory) // if we need to add this object to the player's inventory, do so
+        {
+            Inventory playerInventory = player.GetComponent<Inventory>(); // get the inventory component from this player
+            playerInventory.addToInventory(); // add it
+        }
+        onInteract?.Invoke(); //then, do the rest of the interactions set in the editor using an event system: On_Interact()
     }
 
     public void OnFocusGained()

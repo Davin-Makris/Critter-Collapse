@@ -1222,11 +1222,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &703095405 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2872818624306320085, guid: 38da96f7df236804ca23fecce2310161, type: 3}
-  m_PrefabInstance: {fileID: 1062287336952393721}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1038863765
 GameObject:
   m_ObjectHideFlags: 0
@@ -2069,18 +2064,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1579246630}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
-        m_MethodName: addToInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!4 &1754109470
 Transform:
   m_ObjectHideFlags: 0
@@ -2110,7 +2093,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab6f632f6909da948a617105390d9a52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WateringCan
-  inventory: {fileID: 703095405}
   spawnPoint: {fileID: 537498819}
   holdingCan: 0
 --- !u!1 &1839837591
@@ -2312,7 +2294,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1901183981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2975,8 +2957,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 1062287336952393721}
-  - {fileID: 1383910597}
   - {fileID: 537498820}
-  - {fileID: 1901183983}
   - {fileID: 2006809577}
+  - {fileID: 1383910597}
+  - {fileID: 1901183983}
   - {fileID: 668000879}

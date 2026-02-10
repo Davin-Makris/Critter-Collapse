@@ -2,12 +2,16 @@ using UnityEngine;
 using Unity.Netcode;
 
 public class Inventory : NetworkBehaviour
-{   // you can only have one thing in the inventoy at a time
-    public static bool inventoryFull = false;
-    public static GameObject inInventory; // the obj currently in the inventory
-    [SerializeField] GameObject inventory; // the player's inventory
-    //private GameObject lastObject = InteractableObject.lastObject; // the object that we last interacted with
+{   // you can only have one thing in this inventoy at a time
+    public bool inventoryFull = false;
+    public static GameObject inInventory; // the obj currently in this inventory
+    [SerializeField] GameObject inventory; // this player's inventory
 
+    // on awake: find game object inventory and set it to the inventory var for this script
+    public void onAwake()
+    {
+         inventory = gameObject.transform.Find("Inventory").gameObject; // get the inventory game object on this player object and set it
+    }
 
     public void addToInventory()
     {

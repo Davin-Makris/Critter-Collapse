@@ -31,6 +31,10 @@ public class PlayerMovement : NetworkBehaviour
             sprint = false;
             sprintCooldown = 1f;
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     void OnMove(InputValue value)

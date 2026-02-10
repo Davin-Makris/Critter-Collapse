@@ -24,6 +24,14 @@ public class RelayManager : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
     public async void StartRelay()
     {
         string joinCode = await StartHostWithRelay();

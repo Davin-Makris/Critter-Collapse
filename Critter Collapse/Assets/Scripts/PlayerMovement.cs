@@ -37,6 +37,15 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        if (!IsOwner)
+        {
+            GetComponent<PlayerInput>().enabled = false;
+        }
+    }
+
     void OnMove(InputValue value)
     {
         Vector2 playerMovementValue = (value.Get<Vector2>().normalized);

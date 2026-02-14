@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4130589939
+  GlobalObjectIdHash: 1235336940
   InScenePlacedSourceGlobalObjectIdHash: 4130589939
   DeferredDespawnTick: 0
   Ownership: 1
@@ -202,6 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276e69a8471b02b40aaaa5754e18168d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  ShowTopMostFoldoutHeaderGroup: 1
+  inventoryFull: 0
   inventory: {fileID: 2872818624306320085}
 --- !u!114 &1597472782386949537
 MonoBehaviour:

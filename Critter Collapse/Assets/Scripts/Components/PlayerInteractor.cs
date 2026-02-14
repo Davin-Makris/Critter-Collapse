@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class PlayerInteractor : MonoBehaviour
 {
     [SerializeField] private float radius = 2f;
@@ -12,8 +12,15 @@ public class PlayerInteractor : MonoBehaviour
     {
         Interactable nearest = FindNearestInteractable();
         UpdateFocus(nearest);
+        
+        
+    }
+
+    void OnInteract(InputValue value) //Called by inputSystem when player presses E
+    {
+        //Debug.Log("E pressed by player");
         // if there is something we are focused on and we press E to interact with it
-        if (focused != null && Input.GetKeyDown(KeyCode.E))
+        if (focused != null)
         {
             // if we can interact with it, do so
             if (focused.CanInteract()) focused.Interact(gameObject); // gameObject refers to THIS player that is doing the interacting

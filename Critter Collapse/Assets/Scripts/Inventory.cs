@@ -12,26 +12,31 @@ public class Inventory : NetworkBehaviour
     void Awake()
     {
          inventory = gameObject.transform.Find("Inventory").gameObject; // get the inventory game object on this player object and set it
-         inventory.GetComponent<NetworkObject>().Spawn(); // spawn the inventory network object
-         AddToPlayerServerRpc(inventory.GetComponent<NetworkObject>().NetworkObjectId); // set the inventory back to the parent object
-
+         //inventory.GetComponent<NetworkObject>().Spawn(); // spawn the inventory network object
+         //AddToPlayerServerRpc(inventory.GetComponent<NetworkObject>().NetworkObjectId); // set the inventory back to the parent object
     }
 
     public void addToInventory()
     {
         if (!IsOwner) {return;}
 
-        inInventory = InteractableObject.lastObject; // update our inventory
+        inInventory = InteractableObject.lastObject; // update our inInventory to the last object we interacted with
         NetworkObject inInventoryNO;
         if (inventoryFull) // if we already have something in the inventory, drop it
         {
-            if (inInventoryNO = inInventory.GetComponentInParent<NetworkObject>())
+            // if we're working with a networked object
+            if (inInventoryNO = inInventory.GetComponent<NetworkObject>())
             {
-                Debug.Log("Removing Item: " + inInventoryNO.TryRemoveParent(true) + "\nParent: " + inInventory.transform.parent +"\nLast Object Parent: " + InteractableObject.lastObject.transform.parent);
-                inInventory.transform.SetParent(null);
+                //Debug.Log("Removing Item: " + inInventoryNO.TryRemoveParent(true) + "\nParent: " + inInventory.transform.parent +"\nLast Object Parent: " + InteractableObject.lastObject.transform.parent);
+                //inInventory.transform.SetParent(null);
+                Debug.Log("Removing Networked object");
+                inInventoryNO.TryRemoveParent(false);
+                inInventoryNO.transform.position = gameObject.transform.position; // on drop, set the pos of the object to the player's pos
             }
+            // otherwise
             else
             {
+                Debug.Log("Removing regular object");
                 inInventory.transform.SetParent(null); // drop the object
             }
             inInventory = null;
@@ -39,8 +44,8 @@ public class Inventory : NetworkBehaviour
         }
         else // otherwise pick it up
         {
-            
-            if (inInventoryNO = inInventory.GetComponentInParent<NetworkObject>())
+            // if this is a networked object
+            if (inInventoryNO = inInventory.GetComponent<NetworkObject>()) // GetComponentInParent
             {
                 Debug.Log("Trying to pick up network Object");
                 //Debug.Log("Object Picked Up: " + inInventoryNO.TrySetParent(inventory, false));
@@ -48,12 +53,12 @@ public class Inventory : NetworkBehaviour
                 //inInventory.transform.SetParent(inventory.transform);
                 inventoryFull = true;
             }
+            // otherwise
             else
             {
                 inInventory.transform.SetParent(inventory.transform); // pickup the last object we interacted with
                 inventoryFull = true;
             }
-            //Debug.Log("Currently in inventory: " + inInventory);
         }
     }
 

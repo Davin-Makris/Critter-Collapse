@@ -29,7 +29,18 @@ public class PlantContainer : MonoBehaviour
     {
         
     }
-    
+
+    // prints the container when P is pressed- for testing
+    // REMOVE ON BUILD
+    void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            printContainer();
+        }
+    }
+
+
     void removePlant(short plantID)
     {
         //set all matrix positions where plantContainerMatrix[i,j] == plantID to 0.

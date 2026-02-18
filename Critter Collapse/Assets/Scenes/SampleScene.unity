@@ -2277,6 +2277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1957618651}
   - component: {fileID: 1957618650}
+  - component: {fileID: 1957618652}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -2317,6 +2318,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 338668011}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1957618652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957618649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a06957b7c1276d24c81e8968422bced3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantContainer
+  containerWidth: 8
+  containerHeight: 8
 --- !u!1001 &1981069324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2407,7 +2422,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &2006809573
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2498,7 +2513,7 @@ MonoBehaviour:
     m_InternalValue: 1
   plantWidth: 2
   plantHeight: 2
-  pc: {fileID: 1901183981}
+  pc: {fileID: 1957618652}
   myPlantID: 0
 --- !u!114 &2006809576
 MonoBehaviour:
@@ -2529,31 +2544,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1901183981}
-        m_TargetAssemblyTypeName: PlantContainer, Assembly-CSharp
-        m_MethodName: printContainer
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Inventory, Assembly-CSharp
-        m_MethodName: addToInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  canAddToInventory: 0
+  canAddToInventory: 1
 --- !u!4 &2006809577
 Transform:
   m_ObjectHideFlags: 0

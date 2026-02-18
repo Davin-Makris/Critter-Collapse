@@ -101,6 +101,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4461889451533785354}
   - component: {fileID: 551661223883586230}
+  - component: {fileID: 7061854785902978250}
   - component: {fileID: 3962637194261885396}
   - component: {fileID: 4784295620634769403}
   m_Layer: 0
@@ -185,6 +186,36 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7061854785902978250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9142872504264178668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b73f9ec05a9e74499bb691ac5db7ae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableObject
+  displayName: Interact
+  isEnabled: 1
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3962637194261885396}
+        m_TargetAssemblyTypeName: Tile, Assembly-CSharp
+        m_MethodName: printPos
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  canAddToInventory: 0
 --- !u!114 &3962637194261885396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +232,8 @@ MonoBehaviour:
   offsetColor: {r: 0.6226415, g: 0.45261893, b: 0.25425923, a: 1}
   renderer: {fileID: 551661223883586230}
   highlight: {fileID: 6688917403856296037}
+  xPos: 0
+  yPos: 0
 --- !u!61 &4784295620634769403
 BoxCollider2D:
   m_ObjectHideFlags: 0

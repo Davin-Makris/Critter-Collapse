@@ -11,6 +11,7 @@ public class PlayerMovement : NetworkBehaviour
     Vector2 movementAmount = Vector2.zero; //The amount that we adjust the player each frame, set in OnMove event
     float sprintCooldown = 0f;
     bool sprint;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
@@ -18,6 +19,7 @@ public class PlayerMovement : NetworkBehaviour
         
 
     }
+
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movementAmount * Time.fixedDeltaTime);

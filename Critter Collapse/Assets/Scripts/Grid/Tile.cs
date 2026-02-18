@@ -6,6 +6,9 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer renderer;
     [SerializeField] private GameObject highlight;
 
+    public int xPos;
+    public int yPos; 
+
     // if this is an offset tile, change its color on init
     public void Init(bool isOffset)
     {
@@ -22,5 +25,11 @@ public class Tile : MonoBehaviour
     private void OnMouseExit()
     {
         highlight.SetActive(false);
+    }
+
+    // prints this tile's x and y pos for testing
+    public void printPos()
+    {
+        Debug.Log("X: " + xPos + " Y: " + yPos);
     }
 }

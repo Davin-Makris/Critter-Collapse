@@ -11,7 +11,6 @@ public class GrowPlant : MonoBehaviour
     private WateringCan wateringCan; // the watering can for checks
 
     // flags
-    private bool seedWatered = false; // if the seed has been watered
     private bool timerIsRunning = false; // if the timer is running
     private bool plantHarvested = false; // if the plant has been harvested yet
 
@@ -60,7 +59,6 @@ public class GrowPlant : MonoBehaviour
         {
             seed.SetActive(false);
             plant.SetActive(true);
-            seedWatered = true;
             timerIsRunning = true; // start the timer when a plant is watered
             timer = timeUntilRot; // reset the timer in case it has been changed
             Debug.Log("Seed watered");

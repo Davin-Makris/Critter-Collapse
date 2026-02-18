@@ -26,6 +26,8 @@ public class GridManager : MonoBehaviour
                 var spawnedTile = Instantiate(tilePrefab, new Vector3(x + targetXPos, y + targetYPos), Quaternion.identity);
                 spawnedTile.transform.SetParent(gridContainer.transform); // put the tiles in the gridContainer to make the editor neat
                 spawnedTile.name = $"Tile [{x}, {y}]"; // name the tiles in the editor
+                spawnedTile.xPos = x; // set the x pos
+                spawnedTile.yPos = y; // set the y pos
                
 
                 // a var to check if the tile is offset (to create a grid pattern)

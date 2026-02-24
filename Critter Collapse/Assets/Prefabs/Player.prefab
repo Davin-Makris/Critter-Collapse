@@ -100,8 +100,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4882692674318990904}
-  - component: {fileID: 4861380802719300688}
   - component: {fileID: 7715480869321348903}
+  - component: {fileID: 4861380802719300688}
   - component: {fileID: 4686945246132000513}
   - component: {fileID: 4225494852471626389}
   - component: {fileID: 1597472782386949537}
@@ -134,22 +134,6 @@ Transform:
   - {fileID: 4874718817103914040}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4861380802719300688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916833155586442154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6fb32c7877781a49a0a84ef971c9ec0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
-  radius: 1
-  interactableLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &7715480869321348903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4130589939
+  GlobalObjectIdHash: 1235336940
   InScenePlacedSourceGlobalObjectIdHash: 4130589939
   DeferredDespawnTick: 0
   Ownership: 1
@@ -175,6 +159,23 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &4861380802719300688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916833155586442154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6fb32c7877781a49a0a84ef971c9ec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+  ShowTopMostFoldoutHeaderGroup: 1
+  radius: 1
+  interactableLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &4686945246132000513
 MonoBehaviour:
   m_ObjectHideFlags: 0

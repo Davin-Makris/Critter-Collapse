@@ -1,11 +1,15 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.InputSystem;
+using UnityEngine.Animations;
 
 public class Inventory : NetworkBehaviour
 {   // you can only have one thing in this inventoy at a time
     public bool inventoryFull = false;
     //NOTE: REMOVE STATIC FROM HERE AND TILE.CS
     public static GameObject inInventory; // the obj currently in this inventory
+    private NetworkObject inInventoryNO; // the obj currently in the inventory if it's networked
+    //public NetworkVariable<NetworkObject> InventoryNO = new NetworkVariable<NetworkObject>();
     [SerializeField] GameObject inventory; // this player's inventory
 
     // on awake: find game object inventory and set it to the inventory var for this script
@@ -16,27 +20,41 @@ public class Inventory : NetworkBehaviour
          //AddToPlayerServerRpc(inventory.GetComponent<NetworkObject>().NetworkObjectId); // set the inventory back to the parent object
     }
 
-    public void addToInventory()
+    public override void OnNetworkSpawn()
     {
-        if (!IsOwner) {return;}
+        base.OnNetworkSpawn();
+        if (!IsOwner)
+        {
+            gameObject.GetComponent<PlayerInput>().enabled = false;
+        }
+        if (IsServer)
+        {
+            gameObject.name = "Player Server";
+        }
+        else
+        {
+            gameObject.name = "Player Client";
+        }
+    }
+
+    public void addToInventory()
+    { 
 
         inInventory = InteractableObject.lastObject; // update our inInventory to the last object we interacted with
-        NetworkObject inInventoryNO;
         if (inventoryFull) // if we already have something in the inventory, drop it
         {
             // if we're working with a networked object
             if (inInventoryNO = inInventory.GetComponent<NetworkObject>())
             {
-                //Debug.Log("Removing Item: " + inInventoryNO.TryRemoveParent(true) + "\nParent: " + inInventory.transform.parent +"\nLast Object Parent: " + InteractableObject.lastObject.transform.parent);
-                //inInventory.transform.SetParent(null);
-                Debug.Log("Removing Networked object");
-                inInventoryNO.TryRemoveParent(false);
-                inInventoryNO.transform.position = gameObject.transform.position; // on drop, set the pos of the object to the player's pos
+                if (!IsOwner) { return; }
+                Debug.Log(gameObject.name + " is removing Networked object");
+                DropItemServerRPC();
+                //inInventoryNO.transform.position = gameObject.transform.position; // on drop, set the pos of the object to the player's pos
             }
             // otherwise
             else
             {
-                Debug.Log("Removing regular object");
+                Debug.Log(gameObject.name + " is removing regular object");
                 inInventory.transform.SetParent(null); // drop the object
             }
             inInventory = null;
@@ -47,42 +65,45 @@ public class Inventory : NetworkBehaviour
             // if this is a networked object
             if (inInventoryNO = inInventory.GetComponent<NetworkObject>()) // GetComponentInParent
             {
-                Debug.Log("Trying to pick up network Object");
-                //Debug.Log("Object Picked Up: " + inInventoryNO.TrySetParent(inventory, false));
-                AddToInventoryServerRpc(inInventoryNO.NetworkObjectId);
-                //inInventory.transform.SetParent(inventory.transform);
-                inventoryFull = true;
+                if (!IsOwner) { return; }
+                Debug.Log(gameObject.name + " is trying to pick up network Object");
+                PickUpItemServerRPC(gameObject.GetComponent<NetworkObject>().NetworkObjectId);
             }
             // otherwise
             else
             {
+                Debug.Log(gameObject.name + " is trying to pick up a NON-Networked Object");
                 inInventory.transform.SetParent(inventory.transform); // pickup the last object we interacted with
                 inventoryFull = true;
             }
         }
     }
 
+    // if(!IsOwner) return; when setting a focused object
+
     // only the server has permissions to reparent items, so this does that work on the server side
-    // adds the object as a child of the inventory
+    // adds the object as a child of the player using the inventory as a holdpoint
     [ServerRpc]
-    private void AddToInventoryServerRpc(ulong objectId)
+    void PickUpItemServerRPC(ulong ID)
     {
-        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out NetworkObject netObj))
-            return;
-
-        if (inventoryFull)
-            return;
-
-        Debug.Log("Parent set to inventory: " + netObj.TrySetParent(inventory.transform, false));
+        GameObject sender = NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].gameObject;
+        NetworkObject inventoryItem = sender.GetComponent<Inventory>().inInventoryNO;
+        if (!inventoryFull)
+        {
+            Debug.Log(gameObject.name);
+            Debug.Log("Try Set Parent: " + inventoryItem.TrySetParent(sender));
+            inventoryFull = true;
+        }
     }
 
-    // adds the object as a child of the player 
+    // drops the object server-side
     [ServerRpc]
-    private void AddToPlayerServerRpc(ulong objectId)
+    void DropItemServerRPC()
     {
-        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(objectId, out NetworkObject netObj))
-            return;
-
-        Debug.Log("Parent set to player: " + netObj.TrySetParent(gameObject.transform, false));
+        if (inventoryFull)
+        {
+            Debug.Log("Try Remove Parent: " + inInventoryNO.TryRemoveParent(gameObject));
+            inventoryFull = false;
+        }
     }
 }

@@ -27,7 +27,7 @@ public class Inventory : NetworkBehaviour
         {
             gameObject.GetComponent<PlayerInput>().enabled = false;
         }
-        if (IsServer)
+        if (IsServer && IsOwner)
         {
             gameObject.name = "Player Server";
         }
@@ -91,7 +91,8 @@ public class Inventory : NetworkBehaviour
         if (!inventoryFull)
         {
             Debug.Log(gameObject.name);
-            Debug.Log("Try Set Parent: " + inventoryItem.TrySetParent(sender));
+            Debug.Log("InventoryItem: " + inventoryItem + "\nSender: " + sender); //Inventory Item is Null
+            inventoryItem.TrySetParent(sender);
             inventoryFull = true;
         }
     }

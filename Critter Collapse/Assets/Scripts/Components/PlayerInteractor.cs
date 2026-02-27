@@ -23,6 +23,7 @@ public class PlayerInteractor : MonoBehaviour
         {
             //Debug.Log("Interacting...");
             // if we can interact with it, do so
+            Debug.Log("Name: " + gameObject.name + " inateacts with ");
             if (focused.CanInteract()) focused.Interact(gameObject); // gameObject refers to THIS player that is doing the interacting
         }
     }

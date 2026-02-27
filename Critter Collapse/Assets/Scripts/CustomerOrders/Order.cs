@@ -16,11 +16,13 @@ public class Order : ScriptableObject
         foreach (var (plant, count) in orderPlants)
         {
             string tempText = "";
+            
+            Debug.Log(step);
 
             if (count == 0) continue; // if there are none of this plant, move to the next iteration
 
             // if we are at the end
-            if (step == orderPlants.Count - 1)
+            if (step >= orderPlants.Count - 1)
             {
                 tempText = $" and {count} {plant}s.";
             }
@@ -29,7 +31,7 @@ public class Order : ScriptableObject
                 tempText = $" {count} {plant}s,";
             }
             orderText += tempText;
-
+            step++;
         }
         return orderText;
     }

@@ -91,7 +91,9 @@ public class Customer : MonoBehaviour
         foreach (var (id, order) in allOrders)
         {
             int randomTemp = Random.Range(0, 4); // 0 - # of orders, randomTemp is the order ID
-                                                 // if it's not already completed, we can use it
+            orderFound = false;
+
+            // if it's not already completed, we can use it
             if (!allOrders[randomTemp].isComplete)
             {
                 currentOrder = allOrders[randomTemp];

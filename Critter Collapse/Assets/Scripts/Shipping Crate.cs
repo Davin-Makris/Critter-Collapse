@@ -20,7 +20,9 @@ public class ShippingCrate : NetworkBehaviour
 
     public void swapPlayerInput()
     {
-        //localPlayerInput.actions.actionMaps
+        Debug.Log("Swapping Player " + NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.name + "'s Input");
+        localPlayerInput.SwitchCurrentActionMap("Player Ship Crate");
+        Debug.Log("Current Player Input " + localPlayerInput.currentActionMap);
     }
 
     // Update is called once per frame

@@ -33,17 +33,18 @@ public class Tile : MonoBehaviour
         Debug.Log("X: " + xPos + " Y: " + yPos);
     }
 
+    //NEEDS FIXING
     // places the plant on THIS grid piece
     public void placePlantHere()
     {
         // if there is an object in our inventory
-        if (Inventory.inInventory != null)
+        if (gameObject != null) //Inventory.inInventory != null
         {
             // and we have a plant in our inventory, we can place it in the bin at this grid's x and y
-            if (Inventory.inInventory.GetComponent<PlantShape>() != null)
+            if (gameObject != null) //Inventory.inInventory.GetComponent<PlantShape>() != null)
             {
-                PlantShape plantObjInInventory = Inventory.inInventory.GetComponent<PlantShape>();
-                plantObjInInventory.placeInBinRPC(xPos, yPos);
+                //PlantShape plantObjInInventory = Inventory.inInventory.GetComponent<PlantShape>();
+                //plantObjInInventory.placeInBinRPC(xPos, yPos);
                 //Debug.Log("PLANT ID: " + plantObjInInventory.myPlantID);
             }
             // otherwise we cannot

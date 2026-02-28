@@ -24,11 +24,11 @@ public class Order : ScriptableObject
             // if we are at the end
             if (step >= orderPlants.Count - 1)
             {
-                tempText = $" and {count} {plant}s.";
+                tempText = $" and {count} of the {plant}s.";
             }
             else
             {
-                tempText = $" {count} {plant}s,";
+                tempText = $" {count} of the {plant}s,";
             }
             orderText += tempText;
             step++;

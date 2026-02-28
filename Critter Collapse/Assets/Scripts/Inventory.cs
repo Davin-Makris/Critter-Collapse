@@ -7,10 +7,15 @@ public class Inventory : NetworkBehaviour
 {   // you can only have one thing in this inventoy at a time
     public bool inventoryFull = false;
     //NOTE: REMOVE STATIC FROM HERE AND TILE.CS
-    public static GameObject inInventory; // the obj currently in this inventory
+    public GameObject focusedOn; // a ref to the obj the player this inventory is attached to is focused on 
+    public GameObject inInventory; // a ref to the game obj currently in our inventory
     private NetworkObject inInventoryNO; // the obj currently in the inventory if it's networked
-    //public NetworkVariable<NetworkObject> InventoryNO = new NetworkVariable<NetworkObject>();
     [SerializeField] GameObject inventory; // this player's inventory
+
+    void Start()
+    {
+        focusedOn = gameObject.GetComponent<PlayerInteractor>().focusedOnGameObj;
+    }
 
     // on awake: find game object inventory and set it to the inventory var for this script
     void Awake()
@@ -38,9 +43,10 @@ public class Inventory : NetworkBehaviour
     }
 
     public void addToInventory()
-    { 
-
-        inInventory = InteractableObject.lastObject; // update our inInventory to the last object we interacted with
+    {
+        //inInventory = InteractableObject.lastObject; // update our inInventory to the last object we interacted with
+        focusedOn = gameObject.GetComponent<PlayerInteractor>().focusedOnGameObj;
+        inInventory = focusedOn; // update out inventory with the last obj we interacted with (or focused on)
         if (inventoryFull) // if we already have something in the inventory, drop it
         {
             // if we're working with a networked object

@@ -6,7 +6,8 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private LayerMask interactableLayers;
 
     private Collider2D[] buffer = new Collider2D[32]; // contains all objects around us
-    private Interactable focused; // the object that we are currently focusing on
+    public Interactable focused; // the object that we are currently focusing on
+    public GameObject focusedOnGameObj; // the gameOBj we are currently focused on
 
     void Update()
     {
@@ -47,6 +48,7 @@ public class PlayerInteractor : MonoBehaviour
             float DistSq = (col.transform.position - transform.position).sqrMagnitude;
             if (DistSq < BestDistSq) // if we have a better distance
             {
+                focusedOnGameObj = col.gameObject; // get the game object this collider is attached to (what we're focused on)
                 BestDistSq = DistSq; // update the distance
                 nearest = interactable; // update the nearest object as well
             }

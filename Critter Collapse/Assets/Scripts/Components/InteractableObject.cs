@@ -13,6 +13,7 @@ public class InteractableObject : MonoBehaviour, Interactable
     public bool CanInteract() => isEnabled;
 
     private Outline outline;
+    //REMOVE STATIC- needs to be player specific
     public static GameObject lastObject; // a reference to the last object interacted with for when we add it to the inventory
 
     public void Awake()

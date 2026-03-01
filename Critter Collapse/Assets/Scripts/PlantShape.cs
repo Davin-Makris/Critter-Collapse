@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 public class PlantShape : NetworkBehaviour
 {
-    public NetworkVariable<short> _GLOBALPLANTID = new NetworkVariable<short>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner); //Plant ID unique identifies plants, and the ID will be how we differentiate the plants in different positions of the container
+    public NetworkVariable<short> _GLOBALPLANTID = new NetworkVariable<short>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server); //Plant ID unique identifies plants, and the ID will be how we differentiate the plants in different positions of the container
     [SerializeField] public short plantWidth;
     [SerializeField] public short plantHeight;
     [SerializeField] PlantContainer pc; //Reference to the shipment container
@@ -21,8 +21,7 @@ public class PlantShape : NetworkBehaviour
 
     private void Awake()
     {
-        myPlantID = _GLOBALPLANTID.Value; //Assign plantID, then increment the class-shared variable to keep it unique
-        _GLOBALPLANTID.Value+=1;
+        
     }
     void Start()
     {
@@ -30,6 +29,16 @@ public class PlantShape : NetworkBehaviour
         //RotateMatrix();
         //placeInBin(0, 0);
     }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        myPlantID = _GLOBALPLANTID.Value; //Assign plantID, then increment the class-shared variable to keep it unique
+        if (IsServer) { 
+            _GLOBALPLANTID.Value += 1;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()

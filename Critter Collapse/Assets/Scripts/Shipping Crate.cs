@@ -14,8 +14,8 @@ public class ShippingCrate : NetworkBehaviour
     {
         base.OnNetworkSpawn();
         //References player that owns the script. So client -> Client Player or Server -> Server Player
-        localPlayerInput = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
-        
+        //localPlayerInput = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
+
     }
 
     public void swapPlayerInput()

@@ -10,28 +10,17 @@ public class Order : ScriptableObject
     //returns the text for this order to put in the OrderText field
     public string getOrderText()
     {
-        string orderText = "I want:";
-        int step = 0;
+        string orderText = "Add to this order:";
 
         foreach (var (plant, count) in orderPlants)
         {
             string tempText = "";
-            
-            Debug.Log(step);
 
-            if (count == 0) continue; // if there are none of this plant, move to the next iteration
+            // if there are none of this plant, move to the next iteration
+            if (count == 0) continue;
 
-            // if we are at the end
-            if (step >= orderPlants.Count - 1)
-            {
-                tempText = $" and {count} of the {plant}s.";
-            }
-            else
-            {
-                tempText = $" {count} of the {plant}s,";
-            }
+            tempText = $", {count} of the {plant}s";
             orderText += tempText;
-            step++;
         }
         return orderText;
     }

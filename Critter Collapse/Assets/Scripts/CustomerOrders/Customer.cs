@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
+using Unity.Netcode;
 using TMPro; 
 
-public class Customer : MonoBehaviour
+public class Customer : NetworkBehaviour
 {
     //FLOWER KEY (how many tiles they take up):
     // Chocolate Cosmos: 6
@@ -17,12 +19,23 @@ public class Customer : MonoBehaviour
     public Dictionary<int, Order> allOrders = new Dictionary<int, Order>(); //a dict of all possible orders
     private Order currentOrder; // a ref to the order we're currently on
     [SerializeField] public TMP_Text orderText; // a ref to the order text in the canvas for updating
+    private NetworkVariable<FixedString512Bytes> textToSet = new NetworkVariable<FixedString512Bytes>(); // string of the text to set to the order text
+    //"not null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (!IsSpawned)
+        {
+            Debug.Log("I'M NOT SPAWNED SOB SOB SOB");
+        }
         setUpOrders();
         orderText.text = "Testing";
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
     }
 
     // sets all the orders with values for plants, # of plants, and ID
@@ -46,7 +59,6 @@ public class Customer : MonoBehaviour
             tempOrders[x].setID(x); // set the ID
             allOrders.Add(x, tempOrders[x]); // add the order to the dict using the ID as the key
         }
-
     }
 
     // sets and returns ONE Order given the param values
@@ -72,8 +84,8 @@ public class Customer : MonoBehaviour
     // gets a random order from the list and updates the order text on New Order button click
     public void NewOrderButtonClick()
     {
-        getRandOrder();
-        updateOrderText();
+        getRandOrderServerRPC();
+        //updateOrderText();
     }
 
     // completes the current order
@@ -84,14 +96,15 @@ public class Customer : MonoBehaviour
 
     // gets a random incomplete order from allOrders
     // Random.Range(x, y) gives a range from x (inclusinve) to y (exclusive) aka x to y - 1
-    public void getRandOrder()
+    [ServerRpc]
+    public void getRandOrderServerRPC()
     {
         bool orderFound = false; // flag check
 
         foreach (var (id, order) in allOrders)
         {
             int randomTemp = Random.Range(0, 4); // 0 - # of orders, randomTemp is the order ID
-            orderFound = false;
+            //orderFound = false;
 
             // if it's not already completed, we can use it
             if (!allOrders[randomTemp].isComplete)
@@ -103,17 +116,25 @@ public class Customer : MonoBehaviour
         }
 
         // if we went though all orders but all are complete
-        // either reset all orders to play again or end game
-        if (!orderFound)
+        // either reset all orders to play again or end the game
+        if (orderFound is false)
         {
             orderText.text = "Congrats! You completed all orders! The End :)";
+            return;
         }
+
+        Debug.Log(currentOrder.getOrderText());
+        Debug.Log(textToSet.Value);
+        textToSet.Value = currentOrder.getOrderText();
+        orderText.text = textToSet.Value.ToString();
     }
 
     // updates the orderText in the Canvas
     public void updateOrderText()
     {
-        orderText.text = currentOrder.getOrderText();
+        Debug.Log(currentOrder.getOrderText());
+        Debug.Log(textToSet.Value);
+        
     }
 
     // marks the order with the given ID as complete

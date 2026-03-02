@@ -14,6 +14,9 @@ public class RelayManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI joinCodeText;
     [SerializeField] private TMP_InputField joinCodeInputField;
+
+    [SerializeField] private GameObject hostCodeManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     async void Start()
     {
@@ -36,6 +39,8 @@ public class RelayManager : MonoBehaviour
     {
         string joinCode = await StartHostWithRelay();
         joinCodeText.text = "Lobby Code: " + joinCode;
+        GameCode sendCode = hostCodeManager.GetComponent<GameCode>();
+        sendCode.setGameCode(joinCode);
         NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
     }
 

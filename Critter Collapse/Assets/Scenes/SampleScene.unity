@@ -1853,7 +1853,7 @@ Transform:
   m_GameObject: {fileID: 966290385}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.4, y: -4.7, z: -0.01}
+  m_LocalPosition: {x: -8.4, y: -3.6, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3574,7 +3574,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 3962637194261885396, guid: 6b9e9bd836faea146a2c7211c2e5be98, type: 3}
   gridContainer: {fileID: 966290385}
   targetXPos: -8.4
-  targetYPos: -3.6
+  targetYPos: -4
 --- !u!4 &1957618651
 Transform:
   m_ObjectHideFlags: 0

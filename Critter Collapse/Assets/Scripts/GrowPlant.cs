@@ -57,14 +57,14 @@ public class GrowPlant : NetworkBehaviour
     }
 
     // sent from the server to instruct all clients to update the dirtPlot prefab
-    [ServerRpc (InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc (SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void PlantSeedServerRPC()
     {
         PlantSeedClientRPC();
     }
 
     // runs on all clients to update prefabs
-    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
     public void PlantSeedClientRPC()
     {
         dirtPlot.SetActive(false);
@@ -73,13 +73,13 @@ public class GrowPlant : NetworkBehaviour
         Debug.Log("Seed planted");
     }
 
-    [ServerRpc (InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void WaterSeedServerRPC()
     {
         WaterSeedClientRPC();
     }
 
-    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
     public void WaterSeedClientRPC()
     {
         // if the player is holding the watering can
@@ -97,14 +97,14 @@ public class GrowPlant : NetworkBehaviour
         }
     }
 
-    [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void HarvestPlantServerRPC()
     {
         HarvestPlantClientRPC();
     }
 
 
-    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
     public void HarvestPlantClientRPC()
     {
         dirtPlot.SetActive(true);
@@ -113,13 +113,13 @@ public class GrowPlant : NetworkBehaviour
         Debug.Log("Plant Harvested");
     }
 
-    [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void PlantRotServerRPC()
     {
         PlantRotClientRPC();
     }
 
-    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
     public void PlantRotClientRPC()
     {
         plant.SetActive(false);

@@ -96,7 +96,8 @@ public class Customer : NetworkBehaviour
 
     // gets a random incomplete order from allOrders
     // Random.Range(x, y) gives a range from x (inclusinve) to y (exclusive) aka x to y - 1
-    [ServerRpc]
+    //(InvokePermission = RpcInvokePermission.Everyone
+    [ServerRpc (RequireOwnership = false)]
     public void getRandOrderServerRPC()
     {
         bool orderFound = false; // flag check

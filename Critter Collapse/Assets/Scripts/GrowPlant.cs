@@ -1,6 +1,7 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class GrowPlant : MonoBehaviour
+public class GrowPlant : NetworkBehaviour
 {
     // access the objects that we're going to be updating
     [SerializeField] GameObject dirtPlot;
@@ -29,12 +30,23 @@ public class GrowPlant : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+    }
+
+    // runs and updates the timer- place this in Update()
+    private void runTimer()
+    {
         if (!plantHarvested) // if we haven't harvested the plant yet
         {
-            bool check = TimePlant(); // update the timer
+            bool check = TimePlant(); // update the timer 
             if (check == false) // if the player ran out of time
             {
-                PlantRot(); // make the plant rot
+                PlantRotServerRPC(); // make the plant rot
             }
         }
         else
@@ -44,7 +56,16 @@ public class GrowPlant : MonoBehaviour
         }
     }
 
-    public void PlantSeed()
+    // sent from the server to instruct all clients to update the dirtPlot prefab
+    [ServerRpc (InvokePermission = RpcInvokePermission.Everyone)]
+    public void PlantSeedServerRPC()
+    {
+        PlantSeedClientRPC();
+    }
+
+    // runs on all clients to update prefabs
+    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void PlantSeedClientRPC()
     {
         dirtPlot.SetActive(false);
         seed.SetActive(true);
@@ -52,7 +73,14 @@ public class GrowPlant : MonoBehaviour
         Debug.Log("Seed planted");
     }
 
-    public void WaterSeed()
+    [ServerRpc (InvokePermission = RpcInvokePermission.Everyone)]
+    public void WaterSeedServerRPC()
+    {
+        WaterSeedClientRPC();
+    }
+
+    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void WaterSeedClientRPC()
     {
         // if the player is holding the watering can
         if (wateringCan.holdingCan)
@@ -67,10 +95,17 @@ public class GrowPlant : MonoBehaviour
         {
             Debug.Log("Cannot water seeds without the watering can");
         }
-
     }
 
-    public void HarvestPlant()
+    [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void HarvestPlantServerRPC()
+    {
+        HarvestPlantClientRPC();
+    }
+
+
+    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void HarvestPlantClientRPC()
     {
         dirtPlot.SetActive(true);
         plant.SetActive(false);
@@ -78,7 +113,14 @@ public class GrowPlant : MonoBehaviour
         Debug.Log("Plant Harvested");
     }
 
-    public void PlantRot()
+    [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void PlantRotServerRPC()
+    {
+        PlantRotClientRPC();
+    }
+
+    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void PlantRotClientRPC()
     {
         plant.SetActive(false);
         rot.SetActive(true);
@@ -86,7 +128,14 @@ public class GrowPlant : MonoBehaviour
         Debug.Log("Plant Rotted");
     }
 
-    public void CleanRot()
+    [ServerRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void CleanRotServerRPC()
+    {
+        CleanRotClientRPC();
+    }
+
+    [ClientRpc(InvokePermission = RpcInvokePermission.Everyone)]
+    public void CleanRotClientRPC()
     {
         rot.SetActive(false);
         dirtPlot.SetActive(true);

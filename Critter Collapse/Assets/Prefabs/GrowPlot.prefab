@@ -113,7 +113,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7781307711498039900}
         m_TargetAssemblyTypeName: GrowPlant, Assembly-CSharp
-        m_MethodName: PlantSeed
+        m_MethodName: PlantSeedServerRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -310,7 +310,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7781307711498039900}
         m_TargetAssemblyTypeName: GrowPlant, Assembly-CSharp
-        m_MethodName: HarvestPlant
+        m_MethodName: HarvestPlantServerRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -403,6 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8696490361097492898}
+  - component: {fileID: 4554192357182117671}
   - component: {fileID: 7781307711498039900}
   m_Layer: 0
   m_Name: GrowPlot
@@ -430,6 +431,31 @@ Transform:
   - {fileID: 603515423158954814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4554192357182117671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3752153116586779853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2368840308
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 7
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 1
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &7781307711498039900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31b45f26b8d25a54181691ecc8b95145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrowPlant
+  ShowTopMostFoldoutHeaderGroup: 1
   dirtPlot: {fileID: 1625767771898181206}
   seed: {fileID: 3948527210739690757}
   plant: {fileID: 1843570057180287912}
@@ -561,7 +588,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7781307711498039900}
         m_TargetAssemblyTypeName: GrowPlant, Assembly-CSharp
-        m_MethodName: WaterSeed
+        m_MethodName: WaterSeedServerRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -748,7 +775,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7781307711498039900}
         m_TargetAssemblyTypeName: GrowPlant, Assembly-CSharp
-        m_MethodName: CleanRot
+        m_MethodName: CleanRotServerRPC
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

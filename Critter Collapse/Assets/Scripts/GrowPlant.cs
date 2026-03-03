@@ -76,25 +76,28 @@ public class GrowPlant : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void WaterSeedServerRPC()
     {
-        WaterSeedClientRPC();
-    }
-
-    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
-    public void WaterSeedClientRPC()
-    {
-        // if the player is holding the watering can
         if (wateringCan.holdingCan)
         {
-            seed.SetActive(false);
-            plant.SetActive(true);
-            timerIsRunning = true; // start the timer when a plant is watered
-            timer = timeUntilRot; // reset the timer in case it has been changed
-            Debug.Log("Seed watered");
+            WaterSeedClientRPC();
         }
         else
         {
             Debug.Log("Cannot water seeds without the watering can");
         }
+        
+    }
+
+    [Rpc(SendTo.ClientsAndHost, InvokePermission = RpcInvokePermission.Everyone)]
+    public void WaterSeedClientRPC()
+    {
+        //not updataed across network, we can move this check to the ServerRPC and make sure that the person who sent it is
+        //holding the watering can, or we can move it to interact and make sure they're holding the watering can before we even send the RPC
+        seed.SetActive(false);
+        plant.SetActive(true);
+        timerIsRunning = true; // start the timer when a plant is watered
+        timer = timeUntilRot; // reset the timer in case it has been changed
+        Debug.Log("Seed watered");
+
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

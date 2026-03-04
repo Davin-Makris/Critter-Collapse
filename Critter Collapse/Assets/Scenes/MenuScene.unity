@@ -1116,6 +1116,10 @@ PrefabInstance:
       propertyPath: NetworkConfig.PlayerPrefab
       value: 
       objectReference: {fileID: 916833155586442154, guid: 38da96f7df236804ca23fecce2310161, type: 3}
+    - target: {fileID: 7940736825119385637, guid: fa48a63ca6ed6e142a59f8ce206defff, type: 3}
+      propertyPath: NetworkConfig.ForceSamePrefabs
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8445255617062840934, guid: fa48a63ca6ed6e142a59f8ce206defff, type: 3}
       propertyPath: m_LocalPosition.x
       value: 50
@@ -2152,7 +2156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameCode
   gameCode: 
-  gameCodeFeild: {fileID: 0}
 --- !u!4 &1994796220
 Transform:
   m_ObjectHideFlags: 0

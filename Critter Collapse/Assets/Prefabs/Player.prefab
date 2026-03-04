@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 4569239648674624755}
   - component: {fileID: 2661178756401200291}
   - component: {fileID: 4402553905850563160}
+  - component: {fileID: 7543810676255944712}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -146,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4130589939
+  GlobalObjectIdHash: 1235336940
   InScenePlacedSourceGlobalObjectIdHash: 4130589939
   DeferredDespawnTick: 0
   Ownership: 1
@@ -175,6 +176,7 @@ MonoBehaviour:
   interactableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  focusedOnGameObj: {fileID: 0}
 --- !u!114 &4686945246132000513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +206,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   ShowTopMostFoldoutHeaderGroup: 1
   inventoryFull: 0
+  focusedOn: {fileID: 0}
+  inInventory: {fileID: 0}
   inventory: {fileID: 2872818624306320085}
 --- !u!114 &1597472782386949537
 MonoBehaviour:
@@ -296,7 +300,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: df70fa95-8a34-4494-b137-73ab6b9c7d37
+  m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!50 &4569239648674624755
@@ -418,6 +422,20 @@ MonoBehaviour:
   SwitchTransformSpaceWhenParented: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &7543810676255944712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916833155586442154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b70e0e90d6ad7f4db3d967946e2290e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipCrateNavigator
+  containerWidth: 8
+  containerHeight: 8
 --- !u!1 &2872818624306320085
 GameObject:
   m_ObjectHideFlags: 0

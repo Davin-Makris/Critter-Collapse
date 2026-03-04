@@ -9,6 +9,11 @@ public class Tile : MonoBehaviour
     public int xPos; // x coord of this tile
     public int yPos; // y coord of this tile
 
+    [SerializeField] public Tile northNeighbor;
+    [SerializeField] public Tile southNeighbor;
+    [SerializeField] public Tile eastNeighbor;
+    [SerializeField] public Tile westNeighbor;
+
     // if this is an offset tile, change its color on init
     public void Init(bool isOffset)
     {
@@ -23,6 +28,16 @@ public class Tile : MonoBehaviour
 
     // when we are not hovering over this tile, set the highlight color inactive
     private void OnMouseExit()
+    {
+        highlight.SetActive(false);
+    }
+
+    public void activateHighlight()
+    {
+        highlight.SetActive(true);
+    }
+
+    public void deactivateHighlight()
     {
         highlight.SetActive(false);
     }

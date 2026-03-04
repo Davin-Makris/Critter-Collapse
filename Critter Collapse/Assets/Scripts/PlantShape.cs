@@ -145,6 +145,12 @@ public class PlantShape : NetworkBehaviour
         rotations.Value = 0;
     }
 
+    // gets the shape 'fingerprint' of this plant
+    public short[,] getPlantShape()
+    {
+        return plantMatrix;
+    }
+
     [Rpc(SendTo.Everyone)]
     public void setCactusRPC()
     {

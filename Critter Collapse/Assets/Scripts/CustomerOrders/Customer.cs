@@ -22,6 +22,11 @@ public class Customer : NetworkBehaviour
     private NetworkVariable<FixedString512Bytes> textToSet = new NetworkVariable<FixedString512Bytes>(); // string of the text to set to the order text
     //"not null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
 
+    // used to spawn plants after harvesting them
+    // represents the number of plants we have already spawned
+    Dictionary<string, int> hasSpawned = new Dictionary<string, int>();
+    [SerializeField] public GameObject plantPrefab; // ref to the plant prefab to instantiate and update sprites
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,6 +36,16 @@ public class Customer : NetworkBehaviour
         }
         setUpOrders();
         orderText.text = "Testing";
+
+        // set up hasSpawned
+        hasSpawned.Add("Chocolate Cosmos", 0);
+        hasSpawned.Add("Fireworks", 0);
+        hasSpawned.Add("ForgetMeNots", 0);
+        hasSpawned.Add("LargeLilies", 0);
+        hasSpawned.Add("LilyOfTheValleys", 0);
+        hasSpawned.Add("Lotus", 0);
+        hasSpawned.Add("Roses", 0);
+        hasSpawned.Add("Sunflowers", 0);
     }
 
     public override void OnNetworkSpawn()
@@ -69,14 +84,14 @@ public class Customer : NetworkBehaviour
         //Order temp = new Order();
         Order temp = ScriptableObject.CreateInstance<Order>();
 
-        temp.addPlant("Chocolate Cosmo", choc);
-        temp.addPlant("Firework", firework);
-        temp.addPlant("Forget me not", forgetmenot);
-        temp.addPlant("Large Lilie", largeLily);
-        temp.addPlant("Lily of the Valley", lilyValley);
-        temp.addPlant("Lotu", lotus);
-        temp.addPlant("Rose", rose);
-        temp.addPlant("Sunflower", sun);
+        temp.addPlant("Chocolate Cosmos", choc);
+        temp.addPlant("Fireworks", firework);
+        temp.addPlant("ForgetMeNots", forgetmenot);
+        temp.addPlant("LargeLilies", largeLily);
+        temp.addPlant("LilyOfTheValleys", lilyValley);
+        temp.addPlant("Lotus", lotus);
+        temp.addPlant("Roses", rose);
+        temp.addPlant("Sunflowers", sun);
 
         return temp; 
     }
@@ -88,16 +103,57 @@ public class Customer : NetworkBehaviour
         //updateOrderText();
     }
 
+    // spawns a plant based on the current order
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void spawnPlantFromOrderServerRPC()
+    {
+        if (currentOrder == null)
+        {
+            Debug.Log("Can't spawn plant without an order");
+        }
+
+        Debug.Log("Trying to spawn plant");
+        foreach (var (plant, count) in hasSpawned)
+        {
+            Debug.Log("In for loop");
+            // if what we have spawned is less than how many we need
+            if (count < currentOrder.orderPlants[plant])
+            {
+                Debug.Log("Spawning 1 of " + plant);
+                //spawn one more
+                spawnOnePlant(plant);
+                hasSpawned[plant] = count + 1; // update the count in hasSpawned
+                break; // exit the loop
+            }
+            else
+            {
+                Debug.Log("Spawned " + count + " " + plant + " out of " + currentOrder.orderPlants[plant]);
+            }
+        }
+    }
+
+    // spawns one plant using the given key (plant name)
+    private void spawnOnePlant(string plantName)
+    {
+        if (!IsServer) return; // Only the server/host can spawn network objects
+        Sprite newSprite = Resources.Load<Sprite>(plantName); // get the plant sprite from assets
+        GameObject instance = Instantiate(plantPrefab); // instantiate
+        instance.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
+        instance.GetComponent<NetworkObject>().Spawn(); // Sync across clients
+        Debug.Log(plantName + " spawned");
+    }
+
     // completes the current order
     public void CompleteOrderButtonClick()
     {
+        // ADD code to delete all flowers in the shipping container
         completeOrder(currentOrder.ID);
     }
 
     // gets a random incomplete order from allOrders
     // Random.Range(x, y) gives a range from x (inclusinve) to y (exclusive) aka x to y - 1
     //(InvokePermission = RpcInvokePermission.Everyone
-    [ServerRpc (RequireOwnership = false)]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void getRandOrderServerRPC()
     {
         bool orderFound = false; // flag check

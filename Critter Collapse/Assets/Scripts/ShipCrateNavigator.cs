@@ -24,7 +24,7 @@ public class ShipCrateNavigator : MonoBehaviour
 
 
     //Ship Crate Movement logic
-    PlantShape heldPlantObject;
+    public PlantShape heldPlantObject;
     Vector2 plantMatrixLocation = new Vector2(0, 0);
 
 

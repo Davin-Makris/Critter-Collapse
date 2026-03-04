@@ -42,6 +42,7 @@ public class Inventory : NetworkBehaviour
         }
     }
 
+
     public void addToInventory()
     {
         //inInventory = InteractableObject.lastObject; // update our inInventory to the last object we interacted with
@@ -58,6 +59,12 @@ public class Inventory : NetworkBehaviour
 
                 DropItemServerRPC(inInventoryNO.NetworkObjectId);
                 inventoryFull = false;
+
+                // clear the reference
+                if (inInventoryNO.tag == "Plant")
+                {
+                    dropPlant();
+                }
                 //inInventoryNO.transform.position = gameObject.transform.position; // on drop, set the pos of the object to the player's pos
             }
             // otherwise
@@ -82,6 +89,11 @@ public class Inventory : NetworkBehaviour
                 ulong itemID = focusedOn.GetComponent<NetworkObject>().NetworkObjectId;
                 PickUpItemServerRPC(senderID, itemID);
                 inventoryFull = true;
+
+                if (inInventoryNO.tag == "Plant")
+                {
+                    pickUpPlant();
+                }
             }
             // otherwise
             else
@@ -118,5 +130,24 @@ public class Inventory : NetworkBehaviour
         Debug.Log("Try Remove Parent: " + inventoryItem.TryRemoveParent());
         inventoryFull = false;
         
+    }
+
+    //ADD this line when a plant gets picked up
+    //(player).getComponent<ShipCrateNavigator>().heldPlantObject = (myPlantShapeComponent)
+    //gameObject.getComponent<ShipCrateNavigator>().heldPlantObject = inInventoryNO.getPlantShape();
+    //used everytime the player is picking up a plant
+    private void pickUpPlant()
+    {
+        NetworkObject plantInInventoryNO;
+        if (inInventory.TryGetComponent<NetworkObject>(out plantInInventoryNO))
+        {
+            gameObject.GetComponent<ShipCrateNavigator>().heldPlantObject = plantInInventoryNO.GetComponent<PlantShape>();
+        }
+    }
+
+    // clear the reference when we drop a plant
+    private void dropPlant()
+    {
+        gameObject.GetComponent<ShipCrateNavigator>().heldPlantObject = null;
     }
 }

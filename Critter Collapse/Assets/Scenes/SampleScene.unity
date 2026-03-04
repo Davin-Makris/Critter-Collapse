@@ -716,7 +716,7 @@ GameObject:
   - component: {fileID: 338668011}
   m_Layer: 0
   m_Name: --MANAGERS--
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1524,7 +1524,7 @@ GameObject:
   - component: {fileID: 644232247}
   m_Layer: 0
   m_Name: EventSystem
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2537,7 +2537,7 @@ GameObject:
   - component: {fileID: 1323194297}
   m_Layer: 0
   m_Name: OrderManager
-  m_TagString: Untagged
+  m_TagString: OrderManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2571,6 +2571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Customer
   ShowTopMostFoldoutHeaderGroup: 1
   orderText: {fileID: 1963645651}
+  plantPrefab: {fileID: 1085308213277690034, guid: 19ba776bee8b04d4f9fa4c6624def181, type: 3}
 --- !u!114 &1323194298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3699,7 +3700,7 @@ GameObject:
   - component: {fileID: 1902972909}
   m_Layer: 0
   m_Name: InputManager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3867,7 +3868,7 @@ GameObject:
   - component: {fileID: 1957618652}
   m_Layer: 0
   m_Name: GridManager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

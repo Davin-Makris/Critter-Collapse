@@ -104,6 +104,8 @@ public class GrowPlant : NetworkBehaviour
     public void HarvestPlantServerRPC()
     {
         HarvestPlantClientRPC();
+        Customer orderManager = GameObject.FindGameObjectWithTag("OrderManager").GetComponent<Customer>();
+        orderManager.spawnPlantFromOrderServerRPC();
     }
 
 

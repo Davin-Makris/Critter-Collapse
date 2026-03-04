@@ -19,7 +19,7 @@ public class Order : ScriptableObject
             // if there are none of this plant, move to the next iteration
             if (count == 0) continue;
 
-            tempText = $", {count} of the {plant}s";
+            tempText = $", {count} of the {plant}";
             orderText += tempText;
         }
         return orderText;

@@ -27,6 +27,9 @@ public class Customer : NetworkBehaviour
     Dictionary<string, int> hasSpawned = new Dictionary<string, int>();
     [SerializeField] public GameObject plantPrefab; // ref to the plant prefab to instantiate and update sprites
 
+    // used for mapping the enum in PlantShape to the keys for the plants here
+    Dictionary<string, PlantShape.PLANTS> enumMap = new Dictionary<string, PlantShape.PLANTS>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -40,12 +43,22 @@ public class Customer : NetworkBehaviour
         // set up hasSpawned
         hasSpawned.Add("Chocolate Cosmos", 0);
         hasSpawned.Add("Fireworks", 0);
-        hasSpawned.Add("ForgetMeNots", 0);
-        hasSpawned.Add("LargeLilies", 0);
-        hasSpawned.Add("LilyOfTheValleys", 0);
+        hasSpawned.Add("Forget Me Nots", 0);
+        hasSpawned.Add("Large Lilies", 0);
+        hasSpawned.Add("Lily Of The Valleys", 0);
         hasSpawned.Add("Lotus", 0);
         hasSpawned.Add("Roses", 0);
         hasSpawned.Add("Sunflowers", 0);
+
+        // set up enum map
+        enumMap.Add("Chocolate Cosmos", PlantShape.PLANTS.ChocolateCosmosFlower);
+        enumMap.Add("Fireworks", PlantShape.PLANTS.FireworksFlower);
+        enumMap.Add("Forget Me Nots", PlantShape.PLANTS.ForgetMeNot);
+        enumMap.Add("Large Lilies", PlantShape.PLANTS.Lily);
+        enumMap.Add("Lily Of The Valleys", PlantShape.PLANTS.LilyOfTheValley);
+        enumMap.Add("Lotus", PlantShape.PLANTS.Lotus);
+        enumMap.Add("Roses", PlantShape.PLANTS.Rose);
+        enumMap.Add("Sunflowers", PlantShape.PLANTS.Sunflower);
     }
 
     public override void OnNetworkSpawn()
@@ -86,9 +99,9 @@ public class Customer : NetworkBehaviour
 
         temp.addPlant("Chocolate Cosmos", choc);
         temp.addPlant("Fireworks", firework);
-        temp.addPlant("ForgetMeNots", forgetmenot);
-        temp.addPlant("LargeLilies", largeLily);
-        temp.addPlant("LilyOfTheValleys", lilyValley);
+        temp.addPlant("Forget Me Nots", forgetmenot);
+        temp.addPlant("Large Lilies", largeLily);
+        temp.addPlant("Lily Of The Valleys", lilyValley);
         temp.addPlant("Lotus", lotus);
         temp.addPlant("Roses", rose);
         temp.addPlant("Sunflowers", sun);
@@ -140,7 +153,11 @@ public class Customer : NetworkBehaviour
         GameObject instance = Instantiate(plantPrefab); // instantiate
         instance.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
         instance.GetComponent<NetworkObject>().Spawn(); // Sync across clients
+<<<<<<< Updated upstream
         //instance.GetComponent<PlantShape>().setshapeRPC(PlantShape.PLANTS.Chocole)
+=======
+        instance.GetComponent<PlantShape>().setshapeRPC(enumMap[plantName]);
+>>>>>>> Stashed changes
     }
 
     // completes the current order

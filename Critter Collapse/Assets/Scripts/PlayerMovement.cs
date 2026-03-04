@@ -16,9 +16,13 @@ public class PlayerMovement : NetworkBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         pickupCollider = gameObject.GetComponent<Collider2D>();
-        PlayerInput input = gameObject.GetComponent<PlayerInput>();
-        input.actions.Disable();
-        input.SwitchCurrentActionMap("Player");
+        if (IsOwner)
+        {
+            PlayerInput input = gameObject.GetComponent<PlayerInput>();
+            input.actions.Disable();
+            input.SwitchCurrentActionMap("Player");
+        }
+        
     }
 
     void FixedUpdate()

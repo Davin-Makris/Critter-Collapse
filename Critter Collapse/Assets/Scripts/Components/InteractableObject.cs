@@ -8,6 +8,7 @@ public class InteractableObject : MonoBehaviour, Interactable
     [SerializeField] private UnityEvent onInteract;
     // a flag that checks if we need to add this object to the player inventory during Interact()
     [SerializeField] private bool canAddToInventory = false; // false unless checked otherwise
+    [SerializeField] private bool isPlant = false;
 
     public string DisplayName => displayName; // connects to the Interactable interface values
     public bool CanInteract() => isEnabled;
@@ -36,6 +37,10 @@ public class InteractableObject : MonoBehaviour, Interactable
         {
             Inventory playerInventory = player.GetComponent<Inventory>(); // get the inventory component from this player
             playerInventory.addToInventory(); // add it
+            if (isPlant)
+            {
+                player.GetComponent<ShipCrateNavigator>().heldPlantObject = gameObject.GetComponent<PlantShape>();
+            }
         }
         onInteract?.Invoke(); //then, do the rest of the interactions set in the editor using an event system: On_Interact()
     }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
 public class PlantShape : NetworkBehaviour
 {
     public NetworkVariable<short> _GLOBALPLANTID = new NetworkVariable<short>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server); //Plant ID unique identifies plants, and the ID will be how we differentiate the plants in different positions of the container
@@ -10,7 +11,18 @@ public class PlantShape : NetworkBehaviour
     public short myPlantID;
 
     private NetworkVariable<int> rotations = new NetworkVariable<int>(0);
-
+    public enum PLANTS
+    {
+        ChocolateCosmosFlower,
+        FireworksFlower,
+        ForgetMeNot,
+        Lily,
+        LilyOfTheValley,
+        Lotus,
+        Rose,
+        Sunflower
+    }
+    Dictionary<PLANTS, short[,]> plantShapes = new Dictionary<PLANTS, short[,]>();
 
     // How to incorporate into seeds/interactables:
     // 1. Add a tag to the plantGrow object that will determine what plant it grows into, like 'Cactus' or 'Flower'
@@ -21,7 +33,10 @@ public class PlantShape : NetworkBehaviour
 
     private void Awake()
     {
-        
+        if (!pc)
+        {
+            pc = GameObject.FindGameObjectWithTag("GridContainer").GetComponent<PlantContainer>();
+        }
     }
     void Start()
     {
@@ -37,6 +52,7 @@ public class PlantShape : NetworkBehaviour
         if (IsServer) { 
             _GLOBALPLANTID.Value += 1;
         }
+        initializeDictionary();
     }
 
 
@@ -178,5 +194,92 @@ public class PlantShape : NetworkBehaviour
         plantMatrix = flowerMatrix;
         plantHeight = (short)plantMatrix.GetLength(0);
         plantWidth = (short)plantMatrix.GetLength(1);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    public void setshapeRPC(PLANTS plant)
+    {
+        plantMatrix = plantShapes[plant];
+        plantHeight = (short)plantMatrix.GetLength(0);
+        plantWidth = (short)plantMatrix.GetLength(1);
+    }
+
+    /*
+        */
+
+    //short[,]
+
+    void initializeDictionary()
+    {
+        short[,] ccflowerMatrix =
+        {
+            {myPlantID, 0 },
+            {myPlantID, myPlantID },
+            {myPlantID, myPlantID },
+            {myPlantID, 0 }
+        };
+
+        short[,] fireworksflowerMatrix =
+        {
+            {myPlantID, myPlantID, myPlantID },
+            {myPlantID, myPlantID, myPlantID },
+            {myPlantID, myPlantID, myPlantID },
+            {myPlantID, myPlantID, myPlantID }
+        };
+
+        short[,] forgetmenotMatrix =
+        {
+            {myPlantID, 0         },
+            {myPlantID, myPlantID },
+            {myPlantID, myPlantID }
+        };
+
+        short[,] lilyMatrix =
+        {
+            {myPlantID, myPlantID, myPlantID, myPlantID },
+            {myPlantID, myPlantID, myPlantID, myPlantID },
+            {0        , myPlantID, 0        , 0         }
+        };
+
+        short[,] lilyofthevalleyMatrix =
+        {
+            {0        , myPlantID },
+            {myPlantID, myPlantID },
+            {myPlantID, myPlantID },
+            {myPlantID, myPlantID }
+        };
+
+        short[,] lotusMatrix =
+        {
+            {myPlantID, myPlantID, myPlantID  },
+            {myPlantID, myPlantID, myPlantID  }
+        };
+
+        short[,] roseMatrix =
+        {
+            {myPlantID, 0         },
+            {myPlantID, myPlantID },
+            {0        , myPlantID },
+            {0        , myPlantID }
+        };
+
+        short[,] sunflowerMatrix =
+        {
+            {myPlantID, myPlantID, myPlantID  },
+            {myPlantID, myPlantID, myPlantID  },
+            {myPlantID, myPlantID, myPlantID  },
+            {0,         myPlantID, 0          },
+            {0,         myPlantID, 0          },
+            {0,         myPlantID, 0          }
+        };
+
+        plantShapes[PLANTS.ChocolateCosmosFlower] = ccflowerMatrix;
+        plantShapes[PLANTS.FireworksFlower] = fireworksflowerMatrix;
+        plantShapes[PLANTS.ForgetMeNot] = forgetmenotMatrix;
+        plantShapes[PLANTS.Lily] = lilyMatrix;
+        plantShapes[PLANTS.LilyOfTheValley] = lilyofthevalleyMatrix;
+        plantShapes[PLANTS.Lotus] = lotusMatrix;
+        plantShapes[PLANTS.Rose] = roseMatrix;
+        plantShapes[PLANTS.Sunflower] = sunflowerMatrix;
     }
 }

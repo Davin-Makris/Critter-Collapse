@@ -334,9 +334,9 @@
             "actions": [
                 {
                     "name": "OnMoveSelector",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "d6436523-5a1c-43df-bd53-b12ffa726226",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -381,6 +381,15 @@
                     "name": "OnExitSelector",
                     "type": "Button",
                     "id": "0f06ed71-f5be-492a-a4bf-dfdaa107f358",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OnRotate",
+                    "type": "Button",
+                    "id": "e79f6e30-5b70-4f7d-acd2-08c883bd0e8c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -649,6 +658,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "SelectorInteract",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ebf6e61-bace-4286-bc59-93b8d80aec54",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OnRotate",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4130589939
+  GlobalObjectIdHash: 1235336940
   InScenePlacedSourceGlobalObjectIdHash: 4130589939
   DeferredDespawnTick: 0
   Ownership: 1
@@ -436,6 +436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipCrateNavigator
   containerWidth: 8
   containerHeight: 8
+  ghostPrefab: {fileID: 5138850494278891158, guid: 2448d2febb6977448a1444125a7ec561, type: 3}
 --- !u!1 &2872818624306320085
 GameObject:
   m_ObjectHideFlags: 0

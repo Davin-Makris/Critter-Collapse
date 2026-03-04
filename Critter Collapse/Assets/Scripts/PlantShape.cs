@@ -13,8 +13,9 @@ public class PlantShape : NetworkBehaviour
     private NetworkVariable<int> rotations = new NetworkVariable<int>(0);
     public enum PLANTS
     {
-        ChocolateCosmosFlower,
-        FireworksFlower,
+        ChocolateCosmosFlower, //ChocolateCosmos
+        FireworksFlower, //strname == chocolateCosmos - parameter = PlantShape.PLANTS.chocolatecosmosflower
+                        //plantShape
         ForgetMeNot,
         Lily,
         LilyOfTheValley,

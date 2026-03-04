@@ -140,7 +140,7 @@ public class Customer : NetworkBehaviour
         GameObject instance = Instantiate(plantPrefab); // instantiate
         instance.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
         instance.GetComponent<NetworkObject>().Spawn(); // Sync across clients
-        //instance.GetComponent<PlantShape>().setshapeRPC(PlantShape.PLANTS.)
+        //instance.GetComponent<PlantShape>().setshapeRPC(PlantShape.PLANTS.Chocole)
     }
 
     // completes the current order

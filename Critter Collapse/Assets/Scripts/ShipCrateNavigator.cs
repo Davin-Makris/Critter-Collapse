@@ -90,7 +90,7 @@ public class ShipCrateNavigator : MonoBehaviour
         {selectedTile = yChange > 0 ? selectedTile.northNeighbor : selectedTile.southNeighbor;}
 
         selectedTile.activateHighlight();
-        currentGhostedObject.transform.position = currentGhostedObject.transform.position;
+        currentGhostedObject.transform.position = selectedTile.transform.position + new Vector3(-0.5f, -0.5f, -0.1f);
     }
 
     

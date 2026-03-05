@@ -59,6 +59,9 @@ public class Customer : NetworkBehaviour
         enumMap.Add("Lotus", PlantShape.PLANTS.Lotus);
         enumMap.Add("Roses", PlantShape.PLANTS.Rose);
         enumMap.Add("Sunflowers", PlantShape.PLANTS.Sunflower);
+
+        // set the order on start so we dont run into issues
+        NewOrderButtonClick();
     }
 
     public override void OnNetworkSpawn()

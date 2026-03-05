@@ -107,6 +107,7 @@ public class ShipCrateNavigator : MonoBehaviour
 
     void OnOnSelectorInteract(InputValue input)
     {
+        Debug.Log("OnOnSelectorInteract");
         heldPlantObject.placeInBinRPC((int)plantMatrixLocation.x, (int)plantMatrixLocation.y);
     }
 

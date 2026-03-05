@@ -267,6 +267,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 0
+  isPlant: 0
 --- !u!61 &13794101
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1738,6 +1739,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 0
+  isPlant: 0
 --- !u!61 &665610677
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3107,6 +3109,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 1
+  isPlant: 0
 --- !u!4 &1754109470
 Transform:
   m_ObjectHideFlags: 0
@@ -3508,6 +3511,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 0
+  isPlant: 0
 --- !u!61 &1860803496
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3868,7 +3872,7 @@ GameObject:
   - component: {fileID: 1957618652}
   m_Layer: 0
   m_Name: GridManager
-  m_TagString: Manager
+  m_TagString: GridManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4393,6 +4397,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 1
+  isPlant: 0
 --- !u!4 &2006809577
 Transform:
   m_ObjectHideFlags: 0

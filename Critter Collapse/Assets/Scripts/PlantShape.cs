@@ -10,18 +10,20 @@ public class PlantShape : NetworkBehaviour
     public short[,] plantMatrix; //our shape 'fingerprint,' where plantMatrix[i,j] == myPlantID denotes a occupied space
     public short myPlantID;
 
+    private NetworkVariable<PlantShape.PLANTS> myPlantType = new NetworkVariable<PLANTS>(PLANTS.NONE);
     private NetworkVariable<int> rotations = new NetworkVariable<int>(0);
     public enum PLANTS
     {
-        ChocolateCosmosFlower, //ChocolateCosmos
-        FireworksFlower, //strname == chocolateCosmos - parameter = PlantShape.PLANTS.chocolatecosmosflower
-                        //plantShape
+        ChocolateCosmosFlower,
+        FireworksFlower,
         ForgetMeNot,
         Lily,
         LilyOfTheValley,
         Lotus,
         Rose,
-        Sunflower
+        Sunflower,
+
+        NONE = 99
     }
     Dictionary<PLANTS, short[,]> plantShapes = new Dictionary<PLANTS, short[,]>();
 
@@ -36,7 +38,9 @@ public class PlantShape : NetworkBehaviour
     {
         if (!pc)
         {
-            pc = GameObject.FindGameObjectWithTag("GridContainer").GetComponent<PlantContainer>();
+            pc = GameObject.FindGameObjectWithTag("GridManager").GetComponent<PlantContainer>();
+
+            //Debug.Log("Finding PC: " + pc.gameObject.name);
         }
     }
     void Start()
@@ -54,6 +58,7 @@ public class PlantShape : NetworkBehaviour
             _GLOBALPLANTID.Value += 1;
         }
         initializeDictionary();
+        loadShape();
     }
 
 
@@ -197,10 +202,14 @@ public class PlantShape : NetworkBehaviour
         plantWidth = (short)plantMatrix.GetLength(1);
     }
 
-    [Rpc(SendTo.Everyone)]
-    public void setshapeRPC(PLANTS plant)
+    public void setShape(PLANTS plantType)
     {
-        plantMatrix = plantShapes[plant];
+        myPlantType.Value = plantType;
+    }
+
+    private void loadShape()
+    {
+        plantMatrix = plantShapes[myPlantType.Value];
         plantHeight = (short)plantMatrix.GetLength(0);
         plantWidth = (short)plantMatrix.GetLength(1);
     }
@@ -274,6 +283,11 @@ public class PlantShape : NetworkBehaviour
             {0,         myPlantID, 0          }
         };
 
+        short[,] noneMatrix =
+        {
+            {0 }
+        };
+
         plantShapes[PLANTS.ChocolateCosmosFlower] = ccflowerMatrix;
         plantShapes[PLANTS.FireworksFlower] = fireworksflowerMatrix;
         plantShapes[PLANTS.ForgetMeNot] = forgetmenotMatrix;
@@ -282,5 +296,7 @@ public class PlantShape : NetworkBehaviour
         plantShapes[PLANTS.Lotus] = lotusMatrix;
         plantShapes[PLANTS.Rose] = roseMatrix;
         plantShapes[PLANTS.Sunflower] = sunflowerMatrix;
+
+        plantShapes[PLANTS.NONE] = noneMatrix;
     }
 }

@@ -152,12 +152,8 @@ public class Customer : NetworkBehaviour
         Sprite newSprite = Resources.Load<Sprite>(plantName); // get the plant sprite from assets
         GameObject instance = Instantiate(plantPrefab); // instantiate
         instance.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
+        instance.GetComponent<PlantShape>().setShape(enumMap[plantName]);
         instance.GetComponent<NetworkObject>().Spawn(); // Sync across clients
-<<<<<<< Updated upstream
-        //instance.GetComponent<PlantShape>().setshapeRPC(PlantShape.PLANTS.Chocole)
-=======
-        instance.GetComponent<PlantShape>().setshapeRPC(enumMap[plantName]);
->>>>>>> Stashed changes
     }
 
     // completes the current order

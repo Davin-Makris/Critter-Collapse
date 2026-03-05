@@ -8,6 +8,7 @@ TagManager:
   - Plant
   - Manager
   - OrderManager
+  - GridManager
   layers:
   - Default
   - TransparentFX

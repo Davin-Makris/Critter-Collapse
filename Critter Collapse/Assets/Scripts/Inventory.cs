@@ -5,7 +5,7 @@ using UnityEngine.Animations;
 
 public class Inventory : NetworkBehaviour
 {   // you can only have one thing in this inventoy at a time
-    public bool inventoryFull = false;
+    public NetworkVariable<bool> inventoryFull = new NetworkVariable<bool>();
     //NOTE: REMOVE STATIC FROM HERE AND TILE.CS
     public GameObject focusedOn; // a ref to the obj the player this inventory is attached to is focused on 
     public GameObject inInventory; // a ref to the game obj currently in our inventory
@@ -49,7 +49,7 @@ public class Inventory : NetworkBehaviour
         focusedOn = gameObject.GetComponent<PlayerInteractor>().focusedOnGameObj;
         inInventory = focusedOn; // update out inventory with the last obj we interacted with (or focused on)
         NetworkObject inInventoryNO;
-        if (inventoryFull) // if we already have something in the inventory, drop it
+        if (inventoryFull.Value) // if we already have something in the inventory, drop it
         {
             // if we're working with a networked object
             if (inInventory.TryGetComponent<NetworkObject>(out inInventoryNO))
@@ -58,13 +58,14 @@ public class Inventory : NetworkBehaviour
                 Debug.Log(gameObject.name + " is removing Networked object");
 
                 DropItemServerRPC(inInventoryNO.NetworkObjectId);
-                inventoryFull = false;
+                inventoryFull.Value = false;
 
                 // clear the reference
                 if (inInventoryNO.tag == "Plant")
                 {
                     dropPlant();
                 }
+                return;
                 //inInventoryNO.transform.position = gameObject.transform.position; // on drop, set the pos of the object to the player's pos
             }
             // otherwise
@@ -74,7 +75,7 @@ public class Inventory : NetworkBehaviour
                 inInventory.transform.SetParent(null); // drop the object
             }
             inInventory = null;
-            inventoryFull = false;
+            inventoryFull.Value = false;
         }
         else // otherwise pick it up
         {
@@ -88,19 +89,20 @@ public class Inventory : NetworkBehaviour
                 ulong senderID = gameObject.GetComponent<NetworkObject>().NetworkObjectId;
                 ulong itemID = focusedOn.GetComponent<NetworkObject>().NetworkObjectId;
                 PickUpItemServerRPC(senderID, itemID);
-                inventoryFull = true;
+                inventoryFull.Value = true;
 
                 if (inInventoryNO.tag == "Plant")
                 {
                     pickUpPlant();
                 }
+                return;
             }
             // otherwise
             else
             {
                 Debug.Log(gameObject.name + " is trying to pick up a NON-Networked Object");
                 inInventory.transform.SetParent(inventory.transform); // pickup the last object we interacted with
-                inventoryFull = true;
+                inventoryFull.Value = true;
             }
         }
     }
@@ -128,7 +130,7 @@ public class Inventory : NetworkBehaviour
         //if (!inventoryFull)
             //if (inventoryFull)
         Debug.Log("Try Remove Parent: " + inventoryItem.TryRemoveParent());
-        inventoryFull = false;
+        inventoryFull.Value = false;
         
     }
 

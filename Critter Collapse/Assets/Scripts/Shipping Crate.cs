@@ -23,8 +23,12 @@ public class ShippingCrate : NetworkBehaviour
             localPlayerInput = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
         }
         Debug.Log("Swapping Player " + NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.name + "'s Input");
-        localPlayerInput.SwitchCurrentActionMap("Ship Crate");
-        Debug.Log("Current Player Input " + localPlayerInput.currentActionMap);
+        if (localPlayerInput.GetComponent<ShipCrateNavigator>().heldPlantObject != null)
+        {
+            localPlayerInput.SwitchCurrentActionMap("Ship Crate");
+            Debug.Log("Current Player Input " + localPlayerInput.currentActionMap);
+        }
+        
     }
 
     // Update is called once per frame

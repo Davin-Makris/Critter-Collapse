@@ -190,7 +190,7 @@ public class PlantShape : NetworkBehaviour
         {
             RotateMatrix(clockwise: true);
         }
-        rotations.Value = 0;
+        //rotations.Value = 0;
     }
 
     // gets the shape 'fingerprint' of this plant

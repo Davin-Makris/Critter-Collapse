@@ -152,9 +152,7 @@ public class Customer : NetworkBehaviour
     private void spawnOnePlant(string plantName)
     {
         if (!IsServer) return; // Only the server/host can spawn network objects
-        Sprite newSprite = Resources.Load<Sprite>(plantName); // get the plant sprite from assets
         GameObject instance = Instantiate(plantPrefab); // instantiate
-        instance.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
         instance.GetComponent<PlantShape>().setShape(enumMap[plantName]);
         instance.GetComponent<NetworkObject>().Spawn(); // Sync across clients
     }

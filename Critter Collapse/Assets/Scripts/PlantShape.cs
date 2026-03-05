@@ -10,6 +10,10 @@ public class PlantShape : NetworkBehaviour
     public short[,] plantMatrix; //our shape 'fingerprint,' where plantMatrix[i,j] == myPlantID denotes a occupied space
     public short myPlantID;
 
+
+    // used for mapping the enum in PlantShape to the keys for the plants here
+    Dictionary<PlantShape.PLANTS, string> plantToString = new Dictionary<PlantShape.PLANTS, string>();
+
     private NetworkVariable<PlantShape.PLANTS> myPlantType = new NetworkVariable<PLANTS>(PLANTS.NONE);
     private NetworkVariable<int> rotations = new NetworkVariable<int>(0);
     public enum PLANTS
@@ -58,7 +62,28 @@ public class PlantShape : NetworkBehaviour
             _GLOBALPLANTID.Value += 1;
         }
         initializeDictionary();
+
+        //in case the network variable isn't updated before we're spawned in, we'll subscribe to when it changes so we can start as soon as we recieve it
+        if (myPlantType.Value == PLANTS.NONE) { myPlantType.OnValueChanged += recievedPlantType; } 
+        else //else do it now
+        {
+            recievedPlantType(PLANTS.NONE, myPlantType.Value);
+        }
+
+
+
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        myPlantType.OnValueChanged -= recievedPlantType;
+    }
+    private void recievedPlantType(PLANTS oldType, PLANTS newType)
+    {
         loadShape();
+        string plantName = plantToString[newType];
+        Sprite newSprite = Resources.Load<Sprite>(plantName); // get the plant sprite from assets
+        gameObject.GetComponent<SpriteRenderer>().sprite = newSprite; // set sprite
     }
 
 
@@ -89,19 +114,20 @@ public class PlantShape : NetworkBehaviour
         }
     }
 
-    private bool doesPlantOverlap(int x, int y)
+    public bool doesPlantOverlap(int x, int y)
     {
         for (int i = 0; i < plantWidth; ++i)
         {
             for (int j = 0; j < plantHeight; ++j)
             {
                 //if we take up a space in our matrix, make sure that the container is empty in that spot
-                if (plantMatrix[i, j] != 0 && pc.plantContainerMatrix[x + i, y + j] != 0) // CHECK [j, i]?
+                if (plantMatrix[j, i] != 0 && pc.plantContainerMatrix[y + j, x + i] != 0) // CHECK [j, i]?
                     return true;
             }
         }
         return false;
     }
+
 
     //assigns the values in the container to the plant ID
     private void insertPlant(int x, int y)
@@ -110,9 +136,9 @@ public class PlantShape : NetworkBehaviour
         {
             for (int j = 0; j < plantHeight; ++j)
             {
-                if (plantMatrix[i, j] != 0) //CHECK
+                if (plantMatrix[j, i] != 0) //CHECK
                 {
-                    pc.plantContainerMatrix[x + i, y + j] = myPlantID; //Fill the space
+                    pc.plantContainerMatrix[y + j, x + i] = myPlantID; //Fill the space
                 }
 
             }
@@ -298,5 +324,15 @@ public class PlantShape : NetworkBehaviour
         plantShapes[PLANTS.Sunflower] = sunflowerMatrix;
 
         plantShapes[PLANTS.NONE] = noneMatrix;
+
+        // set up enum map
+        plantToString.Add( PlantShape.PLANTS.ChocolateCosmosFlower, "Chocolate Cosmos");
+        plantToString.Add(PlantShape.PLANTS.FireworksFlower, "Fireworks");
+        plantToString.Add(PlantShape.PLANTS.ForgetMeNot, "ForgetMeNots");
+        plantToString.Add(PlantShape.PLANTS.Lily, "LargeLilies");
+        plantToString.Add(PlantShape.PLANTS.LilyOfTheValley, "LilyOfTheValleys");
+        plantToString.Add(PlantShape.PLANTS.Lotus, "Lotus");
+        plantToString.Add(PlantShape.PLANTS.Rose, "Roses");
+        plantToString.Add(PlantShape.PLANTS.Sunflower, "Sunflowers");
     }
 }

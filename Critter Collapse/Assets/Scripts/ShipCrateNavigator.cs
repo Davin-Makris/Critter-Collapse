@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public class ShipCrateNavigator : MonoBehaviour
+using Unity.Netcode;
+using Unity.Collections;
+public class ShipCrateNavigator : NetworkBehaviour
 {
     [SerializeField] int containerWidth = 8;
     [SerializeField] int containerHeight = 8;
@@ -12,7 +13,7 @@ public class ShipCrateNavigator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -27,8 +28,11 @@ public class ShipCrateNavigator : MonoBehaviour
     public PlantShape heldPlantObject;
     Vector2 plantMatrixLocation = new Vector2(0, 0);
     [SerializeField] GameObject ghostPrefab;
+    [SerializeField] GameObject realPlantPrefab;
     private GameObject currentGhostedObject;
     PlantContainer plantContainer;
+
+    float currentRotation = 0f;
 
     void self_init() //player is spawned before scene so we need to initialize when needed instead of in start
     {
@@ -71,12 +75,12 @@ public class ShipCrateNavigator : MonoBehaviour
             yChange = direction.y > 0 ? 1 : -1;
         }
 
-        if (!(0 <= plantMatrixLocation.x + xChange && plantMatrixLocation.x + xChange < containerWidth))
+        if (!(0 <= plantMatrixLocation.x + xChange && plantMatrixLocation.x + xChange + heldPlantObject.plantWidth <= containerWidth))
         {
             xChange = 0; //if the updated location would move us out of bounds, cancel the xChange
         }
 
-        if (!(0 <= plantMatrixLocation.y + yChange && plantMatrixLocation.y + yChange < containerHeight))
+        if (!(0 <= plantMatrixLocation.y + yChange && plantMatrixLocation.y + yChange + heldPlantObject.plantHeight <= containerHeight))
         {
             yChange = 0; //same for y
         }
@@ -102,13 +106,43 @@ public class ShipCrateNavigator : MonoBehaviour
 
     void OnOnRotate(InputValue input)
     {
-        heldPlantObject.RotateMatrix();
+        if (false)
+        {
+            currentRotation += 90f;
+            heldPlantObject.RotateMatrix();
+            currentGhostedObject.transform.rotation = Quaternion.Euler(0f, 0f, currentRotation);
+        }
+        
     }
 
-    void OnOnSelectorInteract(InputValue input)
+    void OnSelectorInteract(InputValue input)
     {
         Debug.Log("OnOnSelectorInteract");
-        heldPlantObject.placeInBinRPC((int)plantMatrixLocation.x, (int)plantMatrixLocation.y);
+        Debug.Log("Placing in bin at x =" + (int)plantMatrixLocation.x + " and y = " + (int)plantMatrixLocation.y);
+        int newY = 8 - ((int)plantMatrixLocation.y + heldPlantObject.plantHeight);
+        if (!heldPlantObject.doesPlantOverlap((int)plantMatrixLocation.x, newY))
+        {
+            heldPlantObject.placeInBinRPC((int)plantMatrixLocation.x, newY);
+            RequestPlacementServerRpc(heldPlantObject.gameObject.GetComponent<NetworkObject>().NetworkObjectId, currentGhostedObject.transform.position, currentRotation);
+            Destroy(currentGhostedObject);
+            currentGhostedObject = null;
+
+            heldPlantObject = null;
+            gameObject.GetComponent<PlayerInput>().SwitchCurrentActionMap("Player");
+        }
+        
+
+    }
+
+    [ServerRpc]
+    public void RequestPlacementServerRpc(ulong plantNetworkID, Vector3 newPos, float rotation)
+    {
+        GameObject plant = NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantNetworkID].gameObject;
+        plant.GetComponent<NetworkObject>().TryRemoveParent();
+        plant.gameObject.transform.position = newPos;
+        plant.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
+        plant.transform.localScale = new Vector3(1f, 1f);
+
     }
 
 

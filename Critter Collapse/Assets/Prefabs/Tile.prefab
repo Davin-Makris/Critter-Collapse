@@ -177,7 +177,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.82210237, g: 0.63668406, b: 0.4154829, a: 1}
+  m_Color: {r: 0.9607844, g: 0.70980394, b: 0.70980394, a: 0.7058824}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -228,6 +228,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   canAddToInventory: 0
+  isPlant: 0
 --- !u!114 &3962637194261885396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,12 +241,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18faf1910df06f548b28abc169b41df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Tile
-  baseColor: {r: 0.8235295, g: 0.63529414, b: 0.4156863, a: 1}
-  offsetColor: {r: 0.6226415, g: 0.45261893, b: 0.25425923, a: 1}
+  baseColor: {r: 0.9607844, g: 0.70980394, b: 0.70980394, a: 1}
+  offsetColor: {r: 0.7574123, g: 0.40728772, b: 0.52118367, a: 1}
   renderer: {fileID: 551661223883586230}
   highlight: {fileID: 6688917403856296037}
   xPos: 0
   yPos: 0
+  northNeighbor: {fileID: 0}
+  southNeighbor: {fileID: 0}
+  eastNeighbor: {fileID: 0}
+  westNeighbor: {fileID: 0}
 --- !u!61 &4784295620634769403
 BoxCollider2D:
   m_ObjectHideFlags: 0

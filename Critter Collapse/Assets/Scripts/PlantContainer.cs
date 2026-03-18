@@ -1,23 +1,28 @@
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections.Generic;
 
-public class PlantContainer : MonoBehaviour
+public class PlantContainer : NetworkBehaviour
 {
     [SerializeField] public int containerWidth = 8;
     [SerializeField] public int containerHeight = 8;
-    [SerializeField] public short[,] plantContainerMatrix;
+    [SerializeField] public NetworkVariable<short>[,] plantContainerMatrix;
+    public NetworkList<ulong> plantsOnGridContainer;
+
 
     private void Awake()
     {
-        plantContainerMatrix = new short[containerWidth, containerHeight];
+        plantContainerMatrix = new NetworkVariable<short>[containerWidth, containerHeight];
         for (int i = 0; i < containerWidth; ++i)
         {
             for (int j = 0; j < containerHeight; ++j)
             {
-                plantContainerMatrix[i, j] = 0;
+                plantContainerMatrix[i, j] = new NetworkVariable<short>();
+                plantContainerMatrix[i, j].Value = 0;
             }
         }
-        
 
+        plantsOnGridContainer = new NetworkList<ulong>(null, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server); ;
     }
     void Start()
     {
@@ -41,6 +46,17 @@ public class PlantContainer : MonoBehaviour
         }
     }
 
+    [ServerRpc] //server rpc because only the server can despawn.
+    public void clearBoardServerRPC()
+    {
+        // for every id in plantsOnGridContainer.id
+        for (int i = 0; i < plantsOnGridContainer.Count; ++i)
+        {
+            // use the id to grab the object and despawn
+            NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantsOnGridContainer[i]].Despawn();
+        }
+        plantsOnGridContainer.Clear(); //empty the list
+    }
 
     void removePlant(short plantID)
     {
@@ -64,7 +80,7 @@ public class PlantContainer : MonoBehaviour
     public void goodPrintContainer()
     {
         string toPrint = "\n";
-        foreach (short r in plantContainerMatrix)
+        foreach (NetworkVariable<short> r in plantContainerMatrix)
         {
             toPrint += r + " ";
         }

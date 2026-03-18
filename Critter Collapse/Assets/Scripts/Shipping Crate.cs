@@ -1,8 +1,10 @@
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
 public class ShippingCrate : NetworkBehaviour
 {
+    public List<GameObject> plantsOnScreen = new List<GameObject>();
     private PlayerInput localPlayerInput = null;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,11 +24,11 @@ public class ShippingCrate : NetworkBehaviour
             //References player that owns the script. So client -> Client Player or Server -> Server Player
             localPlayerInput = NetworkManager.Singleton.LocalClient.PlayerObject.GetComponent<PlayerInput>();
         }
-        Debug.Log("Swapping Player " + NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.name + "'s Input");
+        //Debug.Log("Swapping Player " + NetworkManager.Singleton.LocalClient.PlayerObject.gameObject.name + "'s Input");
         if (localPlayerInput.GetComponent<ShipCrateNavigator>().heldPlantObject != null)
         {
             localPlayerInput.SwitchCurrentActionMap("Ship Crate");
-            Debug.Log("Current Player Input " + localPlayerInput.currentActionMap);
+            //Debug.Log("Current Player Input " + localPlayerInput.currentActionMap);
         }
         
     }

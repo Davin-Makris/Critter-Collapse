@@ -121,7 +121,7 @@ public class PlantShape : NetworkBehaviour
             for (int j = 0; j < plantHeight; ++j)
             {
                 //if we take up a space in our matrix, make sure that the container is empty in that spot
-                if (plantMatrix[j, i] != 0 && pc.plantContainerMatrix[y + j, x + i] != 0) // CHECK [j, i]?
+                if (plantMatrix[j, i] != 0 && pc.plantContainerMatrix[y + j, x + i].Value != 0) // CHECK [j, i]?
                     return true;
             }
         }
@@ -138,7 +138,7 @@ public class PlantShape : NetworkBehaviour
             {
                 if (plantMatrix[j, i] != 0) //CHECK
                 {
-                    pc.plantContainerMatrix[y + j, x + i] = myPlantID; //Fill the space
+                    pc.plantContainerMatrix[y + j, x + i].Value = myPlantID; //Fill the space
                 }
 
             }

@@ -38,7 +38,9 @@ public class ShipCrateNavigator : NetworkBehaviour
     {
         GameObject gc = GameObject.Find("GridContainer");
 
-        plantContainer = gc.GetComponent<PlantContainer>(); //reference to the matrix that the plants are managed in
+        GameObject gridManager = GameObject.Find("GridManager");
+        plantContainer = gridManager.GetComponent<PlantContainer>(); //reference to the matrix that the plants are managed in
+        Debug.Log("Plant Container is Null in self_init" + (plantContainer == null));
 
         selectedTile = gc.GetComponent<Transform>().Find("Tile [0, 0]").GetComponent<Tile>(); //reference to the first tile we select
         selectedTile.activateHighlight();
@@ -48,7 +50,6 @@ public class ShipCrateNavigator : NetworkBehaviour
 
     void OnOnMoveSelector(InputValue value)
     {
-        Debug.Log("Move Selector!!!!!");
         if (needInit)
         {
             self_init();
@@ -137,8 +138,16 @@ public class ShipCrateNavigator : NetworkBehaviour
     [ServerRpc]
     public void RequestPlacementServerRpc(ulong plantNetworkID, Vector3 newPos, float rotation)
     {
+        if (needInit)
+        {
+            self_init();
+        }
         GameObject plant = NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantNetworkID].gameObject;
         plant.GetComponent<NetworkObject>().TryRemoveParent();
+        Debug.Log("PlantContainer is Null: " + (plantContainer == null));
+        Debug.Log("PlantContainer is Spawned: " + (plantContainer.IsSpawned));
+        Debug.Log("PlantContainerList is Null: " + (plantContainer.plantsOnGridContainer == null));
+        plantContainer.plantsOnGridContainer.Add(plantNetworkID);
         plant.gameObject.transform.position = newPos;
         plant.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
         plant.transform.localScale = new Vector3(1f, 1f);

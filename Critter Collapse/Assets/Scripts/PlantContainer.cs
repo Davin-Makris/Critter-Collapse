@@ -56,6 +56,16 @@ public class PlantContainer : NetworkBehaviour
             NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantsOnGridContainer[i]].Despawn();
         }
         plantsOnGridContainer.Clear(); //empty the list
+
+        // clear the internal matrix of positionsS
+        for (int i = 0; i < containerWidth; ++i)
+        {
+            for (int j = 0; j < containerHeight; ++j)
+            {
+                plantContainerMatrix[i, j].Value = 0;
+            }
+        }
+
     }
 
     void removePlant(short plantID)

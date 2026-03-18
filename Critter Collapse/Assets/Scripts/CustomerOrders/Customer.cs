@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Unity.Netcode;
-using TMPro; 
+using TMPro;
 
 public class Customer : NetworkBehaviour
 {
@@ -19,6 +19,7 @@ public class Customer : NetworkBehaviour
     public Dictionary<int, Order> allOrders = new Dictionary<int, Order>(); //a dict of all possible orders
     private Order currentOrder; // a ref to the order we're currently on
     [SerializeField] public TMP_Text orderText; // a ref to the order text in the canvas for updating
+    [SerializeField] public TMP_Text scoreText; // a ref to the text to update the score
     private NetworkVariable<FixedString512Bytes> textToSet = new NetworkVariable<FixedString512Bytes>(); // string of the text to set to the order text
     //"not null", NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server
 
@@ -109,7 +110,7 @@ public class Customer : NetworkBehaviour
         temp.addPlant("Roses", rose);
         temp.addPlant("Sunflowers", sun);
 
-        return temp; 
+        return temp;
     }
 
     // gets a random order from the list and updates the order text on New Order button click
@@ -205,12 +206,31 @@ public class Customer : NetworkBehaviour
     {
         Debug.Log(currentOrder.getOrderText());
         Debug.Log(textToSet.Value);
-        
+
     }
 
     // marks the order with the given ID as complete
     public void completeOrder(int ID)
     {
         allOrders[ID].setAsComplete(true);
+    }
+
+    public void TestUpdateScore()
+    {
+        UpdateScoreClient(5);
+    }
+
+    // updates the score client side
+    // this function is to be used and called in other code sections
+    public void UpdateScoreClient(int newScore)
+    {
+        UpdateScoreServerRPC(newScore);
+    }
+
+    // updates the score text server side
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void UpdateScoreServerRPC(int newScore)
+    {
+        scoreText.text = "Score: " + newScore;
     }
 }

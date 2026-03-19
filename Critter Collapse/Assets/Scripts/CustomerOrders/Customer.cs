@@ -31,6 +31,11 @@ public class Customer : NetworkBehaviour
     // used for mapping the enum in PlantShape to the keys for the plants here
     Dictionary<string, PlantShape.PLANTS> enumMap = new Dictionary<string, PlantShape.PLANTS>();
 
+    // used for calculating score
+    private PlantContainer plantContainer; 
+    private NetworkList<ulong> plantsInGridContainer = new NetworkList<ulong>();
+    private static int totalScore = 0;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -42,14 +47,7 @@ public class Customer : NetworkBehaviour
         orderText.text = "Testing";
 
         // set up hasSpawned
-        hasSpawned.Add("Chocolate Cosmos", 0);
-        hasSpawned.Add("Fireworks", 0);
-        hasSpawned.Add("Forget Me Nots", 0);
-        hasSpawned.Add("Large Lilies", 0);
-        hasSpawned.Add("Lily Of The Valleys", 0);
-        hasSpawned.Add("Lotus", 0);
-        hasSpawned.Add("Roses", 0);
-        hasSpawned.Add("Sunflowers", 0);
+        setUpPlantDictToZero(hasSpawned);
 
         // set up enum map
         enumMap.Add("Chocolate Cosmos", PlantShape.PLANTS.ChocolateCosmosFlower);
@@ -63,11 +61,29 @@ public class Customer : NetworkBehaviour
 
         // set the order on start so we dont run into issues
         NewOrderButtonClick();
+
+        // update our plantsInPlantContainer var
+        GameObject gridManager = GameObject.Find("GridManager");
+        plantContainer = gridManager.GetComponent<PlantContainer>();
+        plantsInGridContainer = plantContainer.getPlantsOnGridContainer();
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+    }
+
+    // sets up a dictionary for plants with all values to 0
+    private void setUpPlantDictToZero(Dictionary<string, int> plantDict)
+    {
+        plantDict.Add("Chocolate Cosmos", 0);
+        plantDict.Add("Fireworks", 0);
+        plantDict.Add("Forget Me Nots", 0);
+        plantDict.Add("Large Lilies", 0);
+        plantDict.Add("Lily Of The Valleys", 0);
+        plantDict.Add("Lotus", 0);
+        plantDict.Add("Roses", 0);
+        plantDict.Add("Sunflowers", 0);
     }
 
     // sets all the orders with values for plants, # of plants, and ID
@@ -161,8 +177,37 @@ public class Customer : NetworkBehaviour
     // completes the current order
     public void CompleteOrderButtonClick()
     {
-        // ADD code to delete all flowers in the shipping container
         completeOrder(currentOrder.ID);
+        //CompleteOrderServerRPC();
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void CompleteOrderServerRPC()
+    {
+
+        // update our plants list
+        plantsInGridContainer = plantContainer.getPlantsOnGridContainer();
+        Dictionary<string, int> inGridContainer = new Dictionary<string, int>();
+        setUpPlantDictToZero(inGridContainer); // set all to 0
+
+        // set up our reference dict for all plants in the grid container
+        foreach (ulong plantID in plantsInGridContainer)
+        {
+            string plantName = NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantID].gameObject.name;
+            inGridContainer[plantName] = inGridContainer[plantName] + 1;
+            Debug.Log(plantName + ": " + inGridContainer[plantName]);
+        }
+
+        // check if we got it right, if so, update our score
+        foreach (var (plant, count) in inGridContainer)
+        {
+            if ((count != 0) && count == currentOrder.orderPlants[plant])
+            {
+                totalScore += 1;
+            }
+        }
+        UpdateScoreClient();
+
     }
 
     // gets a random incomplete order from allOrders
@@ -195,8 +240,8 @@ public class Customer : NetworkBehaviour
             return;
         }
 
-        Debug.Log(currentOrder.getOrderText());
-        Debug.Log(textToSet.Value);
+        //Debug.Log(currentOrder.getOrderText());
+        //Debug.Log(textToSet.Value);
         textToSet.Value = currentOrder.getOrderText();
         orderText.text = textToSet.Value.ToString();
     }
@@ -215,16 +260,11 @@ public class Customer : NetworkBehaviour
         allOrders[ID].setAsComplete(true);
     }
 
-    public void TestUpdateScore()
-    {
-        UpdateScoreClient(5);
-    }
-
     // updates the score client side
     // this function is to be used and called in other code sections
-    public void UpdateScoreClient(int newScore)
+    public void UpdateScoreClient()
     {
-        UpdateScoreServerRPC(newScore);
+        UpdateScoreServerRPC(totalScore);
     }
 
     // updates the score text server side
@@ -232,5 +272,6 @@ public class Customer : NetworkBehaviour
     private void UpdateScoreServerRPC(int newScore)
     {
         scoreText.text = "Score: " + newScore;
+        totalScore = newScore;
     }
 }

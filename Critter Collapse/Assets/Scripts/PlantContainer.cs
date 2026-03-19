@@ -73,6 +73,11 @@ public class PlantContainer : NetworkBehaviour
         //set all matrix positions where plantContainerMatrix[i,j] == plantID to 0.
     }
 
+    public NetworkList<ulong> getPlantsOnGridContainer()
+    {
+        return plantsOnGridContainer;
+    }
+
     public void printContainer()
     {
         string toPrint = "\n";

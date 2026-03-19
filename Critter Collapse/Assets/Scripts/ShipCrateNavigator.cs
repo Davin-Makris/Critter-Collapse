@@ -140,17 +140,19 @@ public class ShipCrateNavigator : NetworkBehaviour
     {
         if (needInit)
         {
-            self_init();
+            self_init(); //dumb workaround for network objects
         }
+
         GameObject plant = NetworkManager.Singleton.SpawnManager.SpawnedObjects[plantNetworkID].gameObject;
-        plant.GetComponent<NetworkObject>().TryRemoveParent();
-        Debug.Log("PlantContainer is Null: " + (plantContainer == null));
-        Debug.Log("PlantContainer is Spawned: " + (plantContainer.IsSpawned));
-        Debug.Log("PlantContainerList is Null: " + (plantContainer.plantsOnGridContainer == null));
-        plantContainer.plantsOnGridContainer.Add(plantNetworkID);
+        plant.GetComponent<NetworkObject>().TryRemoveParent(); //deparent the plant from the player's inventory
+
+        //move plant to tile
         plant.gameObject.transform.position = newPos;
         plant.transform.rotation = Quaternion.Euler(0f, 0f, rotation);
         plant.transform.localScale = new Vector3(1f, 1f);
+
+        //add to list (to delete later)
+        plantContainer.plantsOnGridContainer.Add(plantNetworkID);
 
     }
 
